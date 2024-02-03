@@ -3,8 +3,7 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='styles.css') }}"
   />
-   <script src="{{ url_for('static', filename='index.js') }}"></script>
-</head>
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
 </head>
 <h2
   style="
@@ -14,108 +13,58 @@
     margin-top: 10px;
   "
 >
-  Create New Period
+  Welcome to SRM Time Table Registration
 </h2>
 <div class="formbold-btn-container">
-  <a href="/form" class="formbold-btn1">Search Form</a>
+  <a href="/create" class="formbold-btn1">Create Form</a>
 </div>
 <div class="formbold-main-wrapper">
   <div class="formbold-form-wrapper">
     <form
-      action="/submit"
-      method="post"
+      style="background-color: #f1ffff; border-radius: 10px; outline: none"
       id="form"
-      style="background-color: #f1ffff"
+      method="post"
     >
       <div class="formbold-input-flex">
         <div>
-          <label for="staffID" class="formbold-form-label"
-            ><b> Staff ID* </b></label
-          >
-          <input
-            type="text"
-            name="staffID"
-            id="staffID"
-            placeholder="23FR1"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-        <div>
           <label for="staffName" class="formbold-form-label">
-            <b> Staff Name*</b>
+            <b>Staff Name</b>
           </label>
           <input
             type="text"
             name="staffName"
             id="staffName"
-            placeholder="Cooper"
+            placeholder="Jane"
             class="formbold-form-input"
-            required
-          />
-        </div>
-      </div>
-      <div class="formbold-input-flex">
-        <div>
-          <label for="registrationNo" class="formbold-form-label">
-            <b> Registration No*</b>
-          </label>
-          <input
-            type="text"
-            name="registrationNo"
-            id="registrationNo"
-            placeholder="SRM23431"
-            class="formbold-form-input"
-            required
           />
         </div>
         <div>
-          <label for="department" class="formbold-form-label">
-            <b> Department*</b>
-          </label>
+          <label for="class" class="formbold-form-label"> <b>Class</b> </label>
           <input
             type="text"
-            name="department"
-            id="department"
-            placeholder="CSE"
+            name="class"
+            id="class"
+            placeholder="II CS A"
             class="formbold-form-input"
-            required
-          />
-        </div>
-      </div>
-
-      <div class="formbold-input-flex">
-        <div>
-          <label for="subject" class="formbold-form-label">
-            <b>Subject*</b>
-          </label>
-          <input
-            type="text"
-            name="subject"
-            id="subject"
-            placeholder="OOPS"
-            class="formbold-form-input"
-            required
           />
         </div>
         <div>
           <label for="roomNo" class="formbold-form-label"
-            ><b> Room No*</b>
-          </label>
+            ><b> Room No </b></label
+          >
           <input
             type="text"
             name="roomNo"
             id="roomNo"
-            placeholder="104"
+            placeholder="403"
             class="formbold-form-input"
-            required
           />
         </div>
       </div>
 
       <div class="formbold-input-flex">
         <div>
-          <label for="day" class="formbold-form-label"><b>Day*</b></label>
+          <label for="day" class="formbold-form-label"><b>Day</b></label>
           <select name="day" id="day" class="formbold-form-input" required>
             <option value="" disabled selected>Select a day</option>
             <option value="1">Day 1</option>
@@ -126,7 +75,7 @@
           </select>
         </div>
         <div>
-          <label for="period" class="formbold-form-label"><b>Period*</b></label>
+          <label for="period" class="formbold-form-label"><b>Period</b></label>
           <select
             name="period"
             id="period"
@@ -146,9 +95,33 @@
           </select>
         </div>
       </div>
-      <button class="formbold-btn" type="submit" id="submitBtn" disabled>
-        Submit
-      </button>
+
+      <div>
+        <label for="subject" class="formbold-form-label">
+          <b> Subject of the period </b>
+        </label>
+        <textarea
+          rows="6"
+          name="subject"
+          id="subject"
+          class="formbold-form-input"
+          readonly
+          style="overflow: hidden"
+        >
+{% if result %}
+                Staff Name: {{ result['Staff Name'] }}
+                Subject: {{ result['Subject'] }}
+                Room No: {{ result['Room No'] }}
+                Class: {{ result['Class'] }}
+{% else %}
+  No matching record found.
+{% endif %}
+
+      </textarea
+        >
+      </div>
+
+      <button class="formbold-btn" id="submitBtn" disabled>Search</button>
     </form>
   </div>
 </div>

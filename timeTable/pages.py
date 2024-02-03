@@ -1,5 +1,5 @@
 import csv
-from flask import Blueprint, render_template, request, make_response
+from flask import Blueprint, render_template, request, make_response,redirect,url_for
 import pandas as pd
 from query import fileQuery
 
@@ -15,9 +15,23 @@ def submitForm():
     roomNo = request.form["roomNo"]
     day = request.form["day"]
     period = request.form["period"]
-    print(request.form)
-    with open("form_data.csv", "a", newline="") as csvfile:
-        fieldnames = [
+    form_data = {
+        "Staff ID": staffId,
+        "Staff Name": staffName,
+        "Registration No": regNo,
+        "Department": department,
+        "Subject": subject,
+        "Room No": roomNo,
+        "Day": day,
+        "Period": period,
+    }
+    writeCsv(form_data)
+
+def writeCsv(data):
+    csv_file_path = "form_data.csv"
+
+    with open(csv_file_path, "a", newline="") as csvfile:
+        field_names = [
             "Staff ID",
             "Staff Name",
             "Registration No",
@@ -27,34 +41,21 @@ def submitForm():
             "Day",
             "Period",
         ]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer = csv.DictWriter(csvfile, fieldnames=field_names)
 
         if csvfile.tell() == 0:
             writer.writeheader()
 
-        writer.writerow(
-            {
-                "Staff ID": staffId,
-                "Staff Name": staffName,
-                "Registration No": regNo,
-                "Department": department,
-                "Subject": subject,
-                "Room No": roomNo,
-                "Day": day,
-                "Period": period,
-            }
-        )
-
+        writer.writerow(data)
 
 @bp.route("/")
 def home():
-    return render_template(
-        "pages/baseForm.html",
-    )
+    return redirect(url_for("pages.createForm"))
 
 
 @bp.route("/form", methods=["GET", "POST"])
-def form():
+def searchForm():
     if request.method == "POST":
         staffName = request.form["staffName"]
         roomNo = request.form["roomNo"]
@@ -67,17 +68,15 @@ def form():
         else:
             roomNo = 0  
         result = fileQuery.query(int(day), int(period), staffName, roomNo, className)
-        print(result)
 
-        return render_template("pages/baseForm.html", result=result)
+        return render_template("pages/searchForm.html", result=result)
 
-    return render_template("pages/baseForm.html", result="Enter your Inputs")
+    return render_template("pages/searchForm.html", result="Enter your Inputs")
 
 
 @bp.route("/create")
 def createForm():
     return render_template("pages/createForm.html")
-
 
 @bp.route("/submit", methods=["POST"])
 def submit():
