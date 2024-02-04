@@ -1,5 +1,5 @@
 from flask import Flask
-import pages
+from timeTable import pages
 
 app = Flask(__name__)
 app.register_blueprint(pages.bp)

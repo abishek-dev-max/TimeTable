@@ -9,7 +9,7 @@ def readSheetFromGoogle():
         "https://www.googleapis.com/auth/drive",
     ]
     credentials = service_account.Credentials.from_service_account_file(
-        "./credentials.json", scopes=scopes
+        "./timeTable/credentials.json", scopes=scopes
     )
     googleCredentials = gspread.authorize(credentials)
     spreadsheetTitle = "SRM_Time_Table"
