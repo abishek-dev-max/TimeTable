@@ -1,7 +1,9 @@
 import csv
-from flask import Blueprint, render_template, request, make_response,redirect,url_for
+from flask import Blueprint, render_template, request, make_response, redirect, url_for
 import pandas as pd
-from query import fileQuery
+import gspread
+from google.oauth2 import service_account
+from timeTable import fileQuery
 
 bp = Blueprint("pages", __name__)
 
@@ -15,7 +17,8 @@ def submitForm():
     roomNo = request.form["roomNo"]
     day = request.form["day"]
     period = request.form["period"]
-    form_data = {
+    className = request.form["class"]
+    periodForm = {
         "Staff ID": staffId,
         "Staff Name": staffName,
         "Registration No": regNo,
@@ -24,30 +27,32 @@ def submitForm():
         "Room No": roomNo,
         "Day": day,
         "Period": period,
+        "Class": className,
     }
-    writeCsv(form_data)
+    writeToGoogleDrive(periodForm)
 
-def writeCsv(data):
-    csv_file_path = "form_data.csv"
 
-    with open(csv_file_path, "a", newline="") as csvfile:
-        field_names = [
-            "Staff ID",
-            "Staff Name",
-            "Registration No",
-            "Department",
-            "Subject",
-            "Room No",
-            "Day",
-            "Period",
-        ]
+def writeToGoogleDrive(data):
+    scopes = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    credentials = service_account.Credentials.from_service_account_file(
+        "./timeTable/credentials.json", scopes=scopes
+    )
+    googleCredentials = gspread.authorize(credentials)
+    spreadsheetTitle = "SRM_Time_Table"
+    try:
+        sheet = googleCredentials.open(spreadsheetTitle)
+    except gspread.exceptions.SpreadsheetNotFound:
+        sheet = googleCredentials.create(spreadsheetTitle)
 
-        writer = csv.DictWriter(csvfile, fieldnames=field_names)
+    worksheetTitle = "Time_Table"
+    worksheet = sheet.worksheet(worksheetTitle)
 
-        if csvfile.tell() == 0:
-            writer.writeheader()
+    df = pd.DataFrame([data])
+    worksheet.append_rows(df.values.tolist())
 
-        writer.writerow(data)
 
 @bp.route("/")
 def home():
@@ -66,7 +71,7 @@ def searchForm():
         if roomNo:
             roomNo = int(roomNo)
         else:
-            roomNo = 0  
+            roomNo = 0
         result = fileQuery.query(int(day), int(period), staffName, roomNo, className)
 
         return render_template("pages/searchForm.html", result=result)
@@ -77,6 +82,7 @@ def searchForm():
 @bp.route("/create")
 def createForm():
     return render_template("pages/createForm.html")
+
 
 @bp.route("/submit", methods=["POST"])
 def submit():
@@ -90,15 +96,31 @@ def submit():
 @bp.route("/download")
 def download():
     try:
-        file_path = "form_data.csv"
+        scopes = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive",
+        ]
+        credentials = service_account.Credentials.from_service_account_file(
+            "./timeTable/credentials.json", scopes=scopes
+        )
+        googleCredentials = gspread.authorize(credentials)
 
-        csv_data = pd.read_csv(file_path)
+        spreadsheetTitle = "SRM_Time_Table"
+        worksheetTitle = "Time_Table"
+        sheet = googleCredentials.open(spreadsheetTitle).worksheet(worksheetTitle)
 
-        response = make_response(csv_data.to_csv(index=False))
+        sheet_data = sheet.get_all_values()
 
-        response.headers["Content-Disposition"] = "attachment; filename=form_data.csv"
+        df = pd.DataFrame(sheet_data[1:], columns=sheet_data[0])
+
+        csvFilePath = "periodForm.csv"
+        df.to_csv(csvFilePath, index=False)
+
+        response = make_response(df.to_csv(index=False))
+        response.headers["Content-Disposition"] = "attachment; filename=periodForm.csv"
         response.headers["Content-type"] = "text/csv"
 
         return response
+
     except FileNotFoundError:
         return "File not found", 404
