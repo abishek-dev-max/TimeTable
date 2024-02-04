@@ -46,15 +46,15 @@ def query(
     day,
     period,
     staffName=None,
-    roomNo=None | int,
+    roomNo=None,
     className=None,
 ):
-    query = timeTable.query("`Day` == @day and `Period` == @period")
+    query = timeTable.query("Day == @day and Period == @period")
 
     if staffName is not None:
         query = query[query["Staff Name"].str.contains(staffName, case=False, na=False)]
     if roomNo:
-        query = query[query["Room No"].astype(str) == str(roomNo)]
+        query = query[query["Room No"] == roomNo]
     if className:
         query = query[query["Class"] == className]
 
@@ -64,7 +64,6 @@ def query(
                 [
                     "Staff ID",
                     "Staff Name",
-                    "Registration No",
                     "Department",
                     "Subject",
                     "Room No",
@@ -79,6 +78,3 @@ def query(
         return result
     else:
         return {"error": "No matching record found."}
-
-
-result = query(day=1, period=1, staffName="John Doe", roomNo=101, className="II CS A")

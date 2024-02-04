@@ -11,7 +11,6 @@ bp = Blueprint("pages", __name__)
 def submitForm():
     staffId = request.form["staffID"]
     staffName = request.form["staffName"]
-    regNo = request.form["registrationNo"]
     department = request.form["department"]
     subject = request.form["subject"]
     roomNo = request.form["roomNo"]
@@ -21,7 +20,6 @@ def submitForm():
     periodForm = {
         "Staff ID": staffId,
         "Staff Name": staffName,
-        "Registration No": regNo,
         "Department": department,
         "Subject": subject,
         "Room No": roomNo,
