@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, request, make_response, redirect, 
 import pandas as pd
 import gspread
 from google.oauth2 import service_account
-from timeTable import fileQuery
+import fileQuery
 
 bp = Blueprint("pages", __name__)
 

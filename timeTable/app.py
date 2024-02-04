@@ -1,5 +1,5 @@
 from flask import Flask
-from timeTable import pages
+import pages
 
 def create_app():
     app = Flask(__name__)
