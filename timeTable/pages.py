@@ -113,9 +113,6 @@ def download():
 
         df = pd.DataFrame(sheet_data[1:], columns=sheet_data[0])
 
-        csvFilePath = "periodForm.csv"
-        df.to_csv(csvFilePath, index=False)
-
         response = make_response(df.to_csv(index=False))
         response.headers["Content-Disposition"] = "attachment; filename=periodForm.csv"
         response.headers["Content-type"] = "text/csv"
