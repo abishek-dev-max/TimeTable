@@ -14,3 +14,28 @@ document.addEventListener("DOMContentLoaded", function () {
     submitBtn.disabled = !allFilled;
   });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  var departmentDropdown = document.getElementById("department");
+  var staffNameDropdown = document.getElementById("staffName");
+
+  var departmentToStaffMap = departmentToStaff ;
+  function updateStaffNames() {
+    staffNameDropdown.innerHTML = "";
+
+    var selectedDepartment = departmentDropdown.value;
+
+    if (selectedDepartment in departmentToStaffMap) {
+      departmentToStaffMap[selectedDepartment].forEach(function (staffName) {
+        var option = document.createElement("option");
+        option.value = staffName;
+        option.text = staffName;
+        staffNameDropdown.add(option);
+      });
+    }
+  }
+
+  departmentDropdown.addEventListener("change", updateStaffNames);
+
+  updateStaffNames();
+});

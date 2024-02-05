@@ -1,11 +1,62 @@
 import csv
-from flask import Blueprint, render_template, request, make_response, redirect, url_for
+from flask import Blueprint, render_template, request, make_response, redirect, url_for, jsonify
 import pandas as pd
 import gspread
 from google.oauth2 import service_account
 from timeTable import fileQuery
 
 bp = Blueprint("pages", __name__)
+
+
+def authorizeAndGetSheet():
+    scopes = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    credentials = service_account.Credentials.from_service_account_file(
+        "./timeTable/credentials.json", scopes=scopes
+    )
+    googleCredentials = gspread.authorize(credentials)
+
+    spreadsheetTitle = "SRM_Time_Table"
+    worksheetTitle = "Time_Table"
+    return {
+        "googleCredentials": googleCredentials,
+        "spreadsheetTitle": spreadsheetTitle,
+        "worksheetTitle": worksheetTitle,
+    }
+
+
+def getStaffNameByDepartment():
+    sheetsAndGoogleCredentials = authorizeAndGetSheet()
+    sheet = (
+        sheetsAndGoogleCredentials["googleCredentials"]
+        .open(sheetsAndGoogleCredentials["spreadsheetTitle"])
+        .worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
+    )
+    if sheet:
+        data = sheet.get_all_records()
+        departmentToStaff = {}
+
+        for entry in data:
+            department = entry["Department"]
+            staff_name = entry["Staff Name"]
+
+            if department in departmentToStaff:
+                departmentToStaff[department].append(staff_name)
+            else:
+                departmentToStaff[department] = [staff_name]
+
+        departments = list(set(entry["Department"] for entry in data))
+        staffNames = list(set(entry["Staff Name"] for entry in data))
+
+        return {
+            "departments": departments,
+            "staffNames": staffNames,
+            "departmentToStaff": departmentToStaff,
+        }
+    else:
+        return "Error accessing Google Sheets", 500
 
 
 def submitForm():
@@ -31,22 +82,17 @@ def submitForm():
 
 
 def writeToGoogleDrive(data):
-    scopes = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    credentials = service_account.Credentials.from_service_account_file(
-        "./timeTable/credentials.json", scopes=scopes
-    )
-    googleCredentials = gspread.authorize(credentials)
-    spreadsheetTitle = "SRM_Time_Table"
+    sheetsAndGoogleCredentials = authorizeAndGetSheet()
     try:
-        sheet = googleCredentials.open(spreadsheetTitle)
+        sheet = sheetsAndGoogleCredentials["googleCredentials"].open(
+            sheetsAndGoogleCredentials["spreadsheetTitle"]
+        )
     except gspread.exceptions.SpreadsheetNotFound:
-        sheet = googleCredentials.create(spreadsheetTitle)
+        sheet = sheetsAndGoogleCredentials["googleCredentials"].create(
+            sheetsAndGoogleCredentials["spreadsheetTitle"]
+        )
 
-    worksheetTitle = "Time_Table"
-    worksheet = sheet.worksheet(worksheetTitle)
+    worksheet = sheet.worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
 
     df = pd.DataFrame([data])
     worksheet.append_rows(df.values.tolist())
@@ -59,6 +105,10 @@ def home():
 
 @bp.route("/form", methods=["GET", "POST"])
 def searchForm():
+    staffAndDepartmentData = getStaffNameByDepartment()
+    departments = staffAndDepartmentData["departments"]
+    staffNames = staffAndDepartmentData["staffNames"]
+    departmentToStaff = staffAndDepartmentData["departmentToStaff"]
     if request.method == "POST":
         staffName = request.form["staffName"]
         roomNo = request.form["roomNo"]
@@ -72,9 +122,21 @@ def searchForm():
             roomNo = 0
         result = fileQuery.query(int(day), int(period), staffName, roomNo, className)
 
-        return render_template("pages/searchForm.html", result=result)
+        return render_template(
+            "pages/searchForm.html",
+            result=result,
+            departments=departments,
+            staffNames=staffNames,
+            departmentToStaff=departmentToStaff,
+        )
 
-    return render_template("pages/searchForm.html", result="Enter your Inputs")
+    return render_template(
+        "pages/searchForm.html",
+        result="Enter your Inputs",
+        departments=departments,
+        staffNames=staffNames,
+        departmentToStaff=departmentToStaff,
+    )
 
 
 @bp.route("/create")
@@ -94,21 +156,15 @@ def submit():
 @bp.route("/download")
 def download():
     try:
-        scopes = [
-            "https://spreadsheets.google.com/feeds",
-            "https://www.googleapis.com/auth/drive",
-        ]
-        credentials = service_account.Credentials.from_service_account_file(
-            "./timeTable/credentials.json", scopes=scopes
+        sheetsAndGoogleCredentials = authorizeAndGetSheet()
+        sheet = (
+            sheetsAndGoogleCredentials["googleCredentials"]
+            .open(sheetsAndGoogleCredentials["spreadsheetTitle"])
+            .worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
         )
-        googleCredentials = gspread.authorize(credentials)
-
-        spreadsheetTitle = "SRM_Time_Table"
-        worksheetTitle = "Time_Table"
-        sheet = googleCredentials.open(spreadsheetTitle).worksheet(worksheetTitle)
 
         sheet_data = sheet.get_all_values()
-
+        print(sheet_data)
         df = pd.DataFrame(sheet_data[1:], columns=sheet_data[0])
 
         response = make_response(df.to_csv(index=False))
