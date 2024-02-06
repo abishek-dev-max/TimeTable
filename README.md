@@ -25,9 +25,9 @@ The project is organized into the following main components:
 1. Install the required dependencies by running:
    ```bash
    pip install -r requirements.txt
-1. Install the required dependencies by running:
+2. Run command for app :
    ```bash
-   pip install -r requirements.txt
+    flask --app timeTable.app  run
 ## Run the Flask application
 python -m flask run
 
