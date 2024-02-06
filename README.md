@@ -26,7 +26,7 @@ The project is organized into the following main components:
    ```bash
    pip install -r requirements.txt
    
-## Setup
+## Development
 
 1. Run Command for the Project:
    ```bash
