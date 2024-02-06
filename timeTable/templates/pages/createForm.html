@@ -1,151 +1,160 @@
-<head>
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='styles.css') }}"
-  />
-   <script src="{{ url_for('static', filename='index.js') }}"></script>
-</head>
-</head>
-<h2
-  style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-  "
->
-  Create New Period
-</h2>
-<div class="formbold-btn-container">
-  <a href="/form" class="formbold-btn1">Search Form</a>
-</div>
-<div class="formbold-main-wrapper">
-  <div class="formbold-form-wrapper">
-    <form
-      action="/submit"
-      method="post"
-      id="form"
-      style="background-color: #f1ffff"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SRM Timetable Finder</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+  </head>
+  <body>
+    <h2
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 10px;
+      "
     >
-      <div class="formbold-input-flex">
-        <div>
-          <label for="staffID" class="formbold-form-label"
-            ><b> Staff ID* </b></label
-          >
-          <input
-            type="text"
-            name="staffID"
-            id="staffID"
-            placeholder="23FR1"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-        <div>
-          <label for="staffName" class="formbold-form-label">
-            <b> Staff Name*</b>
-          </label>
-          <input
-            type="text"
-            name="staffName"
-            id="staffName"
-            placeholder="Cooper"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-         <div>
-          <label for="class" class="formbold-form-label">
-            <b> Class*</b>
-          </label>
-          <input
-            type="text"
-            name="class"
-            id="class"
-            placeholder="Cooper"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-      </div>
-      <div class="formbold-input-flex">
-        <div>
-          <label for="department" class="formbold-form-label">
-            <b> Department*</b>
-          </label>
-          <input
-            type="text"
-            name="department"
-            id="department"
-            placeholder="CSE"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-        <div>
-          <label for="subject" class="formbold-form-label">
-            <b>Subject*</b>
-          </label>
-          <input
-            type="text"
-            name="subject"
-            id="subject"
-            placeholder="OOPS"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-        <div>
-          <label for="roomNo" class="formbold-form-label"
-            ><b> Room No*</b>
-          </label>
-          <input
-            type="text"
-            name="roomNo"
-            id="roomNo"
-            placeholder="104"
-            class="formbold-form-input"
-            required
-          />
-        </div>
-      </div>
+      Create New Period
+    </h2>
+    <div class="formbold-btn-container">
+      <a href="/form" class="formbold-btn1">Search Form</a>
+    </div>
+    <div class="formbold-main-wrapper">
+      <div class="formbold-form-wrapper">
+        <form
+          action="/submit"
+          method="post"
+          id="form"
+          style="background-color: #f1ffff"
+        >
+          <div class="formbold-input-flex">
+            <div>
+              <label for="staffID" class="formbold-form-label"
+                ><b> Staff ID* </b></label
+              >
+              <input
+                type="text"
+                name="staffID"
+                id="staffID"
+                placeholder="23FR1"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="staffName" class="formbold-form-label">
+                <b> Staff Name*</b>
+              </label>
+              <input
+                type="text"
+                name="staffName"
+                id="staffName"
+                placeholder="Cooper"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="class" class="formbold-form-label">
+                <b> Class*</b>
+              </label>
+              <input
+                type="text"
+                name="class"
+                id="class"
+                placeholder="Cooper"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+          </div>
+          <div class="formbold-input-flex">
+            <div>
+              <label for="department" class="formbold-form-label">
+                <b> Department*</b>
+              </label>
+              <input
+                type="text"
+                name="department"
+                id="department"
+                placeholder="CSE"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="subject" class="formbold-form-label">
+                <b>Subject*</b>
+              </label>
+              <input
+                type="text"
+                name="subject"
+                id="subject"
+                placeholder="OOPS"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+            <div>
+              <label for="roomNo" class="formbold-form-label"
+                ><b> Room No*</b>
+              </label>
+              <input
+                type="text"
+                name="roomNo"
+                id="roomNo"
+                placeholder="104"
+                class="formbold-form-input"
+                required
+              />
+            </div>
+          </div>
 
-      <div class="formbold-input-flex">
-        <div>
-          <label for="day" class="formbold-form-label"><b>Day*</b></label>
-          <select name="day" id="day" class="formbold-form-input" required>
-            <option value="" disabled selected>Select a day</option>
-            <option value="1">Day 1</option>
-            <option value="2">Day 2</option>
-            <option value="3">Day 3</option>
-            <option value="4">Day 4</option>
-            <option value="5">Day 5</option>
-          </select>
-        </div>
-        <div>
-          <label for="period" class="formbold-form-label"><b>Period*</b></label>
-          <select
-            name="period"
-            id="period"
-            class="formbold-form-input"
-            required
-          >
-            <option value="" disabled selected>Select a period</option>
-            <option value="1">Period 1</option>
-            <option value="2">Period 2</option>
-            <option value="3">Period 3</option>
-            <option value="4">Period 4</option>
-            <option value="5">Period 5</option>
-            <option value="6">Period 6</option>
-            <option value="7">Period 7</option>
-            <option value="8">Period 8</option>
-            <option value="9">Period 9</option>
-          </select>
-        </div>
+          <div class="formbold-input-flex">
+            <div>
+              <label for="day" class="formbold-form-label"><b>Day*</b></label>
+              <select name="day" id="day" class="formbold-form-input" required>
+                <option value="" disabled selected>Select a day</option>
+                <option value="1">Day 1</option>
+                <option value="2">Day 2</option>
+                <option value="3">Day 3</option>
+                <option value="4">Day 4</option>
+                <option value="5">Day 5</option>
+              </select>
+            </div>
+            <div>
+              <label for="period" class="formbold-form-label"
+                ><b>Period*</b></label
+              >
+              <select
+                name="period"
+                id="period"
+                class="formbold-form-input"
+                required
+              >
+                <option value="" disabled selected>Select a period</option>
+                <option value="1"> 1(8.30-9.20)</option>
+                <option value="2"> 2(9.20-10.10)</option>
+                <option value="3"> 3(10.10-11.00)</option>
+                <option value="4"> 4(11.00-11.50)</option>
+                <option value="5"> 5(11.50-12.40)</option>
+                <option value="6"> 6(12.40-13.30)</option>
+                <option value="7"> 7(13.30-14.15)</option>
+                <option value="8"> 8(14.15-15.00)</option>
+                <option value="9"> 9(15.00-15.45)</option>
+              </select>
+            </div>
+          </div>
+          <button class="formbold-btn" type="submit" id="submitBtn" disabled>
+            Submit
+          </button>
+        </form>
       </div>
-      <button class="formbold-btn" type="submit" id="submitBtn" disabled>
-        Submit
-      </button>
-    </form>
-  </div>
-</div>
+    </div>
+  </body>
+</html>

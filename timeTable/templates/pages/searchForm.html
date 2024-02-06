@@ -1,159 +1,203 @@
-<head>
-  <link
-    rel="stylesheet"
-    href="{{ url_for('static', filename='styles.css') }}"
-  />
-<script>
-    var departmentToStaff = {{ departmentToStaff | tojson }};
-  </script>
-  <script src="{{ url_for('static', filename='index.js') }}" defer></script>
-</head>
-<h2
-  style="
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-  "
->
-  Welcome to SRM Time Table Registration
-</h2>
-<div class="formbold-btn-container">
-  <a href="/create" class="formbold-btn1">Create Form</a>
-</div>
-<div class="formbold-main-wrapper">
-  <div class="formbold-form-wrapper">
-    <form
-      style="background-color: #f1ffff; border-radius: 10px; outline: none"
-      id="form"
-      method="post"
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SRM Timetable Finder</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script>
+      var departmentToStaff = {{ departmentToStaff | tojson }};
+    </script>
+    <script src="{{ url_for('static', filename='index.js') }}" defer></script>
+  </head>
+  <body>
+    <h2
+      style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      "
     >
-      <div class="formbold-input-flex">
-        <div>
-          <label for="department" class="formbold-form-label">
-            <b>Department</b>
-          </label>
-          <select
-            id="department"
-            name="department"
-            class="formbold-form-input"
-            placeholder="CSE"
-          >
-            {% for department in departments %}
-            <option value="{{ department }}">{{ department }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div>
-          <label for="staffName" class="formbold-form-label">
-            <b>Staff Name</b>
-          </label>
-          <select
-            id="staffName"
-            name="staffName"
-            placeholder="Jane"
-            class="formbold-form-input"
-          >
-            {% for staffName in staffNames %}
-            <option value="{{ staffName }}">{{ staffName }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div>
-          <label for="class" class="formbold-form-label"> <b>Class</b> </label>
-          <input
-            type="text"
-            name="class"
-            id="class"
-            placeholder="II CS A"
-            class="formbold-form-input"
-          />
-        </div>
-      </div>
-
-      <div class="formbold-input-flex">
-        <div>
-          <label for="roomNo" class="formbold-form-label"
-            ><b> Room No </b></label
-          >
-          <input
-            type="text"
-            name="roomNo"
-            id="roomNo"
-            placeholder="403"
-            class="formbold-form-input"
-          />
-        </div>
-        <div>
-          <label for="day" class="formbold-form-label"><b>Day</b></label>
-          <select name="day" id="day" class="formbold-form-input" required>
-            <option value="" disabled selected>Select a day</option>
-            <option value="1">Day 1</option>
-            <option value="2">Day 2</option>
-            <option value="3">Day 3</option>
-            <option value="4">Day 4</option>
-            <option value="5">Day 5</option>
-          </select>
-        </div>
-        <div>
-          <label for="period" class="formbold-form-label"><b>Period</b></label>
-          <select
-            name="period"
-            id="period"
-            class="formbold-form-input"
-            required
-          >
-            <option value="" disabled selected>Select a period</option>
-            <option value="1">Period 1</option>
-            <option value="2">Period 2</option>
-            <option value="3">Period 3</option>
-            <option value="4">Period 4</option>
-            <option value="5">Period 5</option>
-            <option value="6">Period 6</option>
-            <option value="7">Period 7</option>
-            <option value="8">Period 8</option>
-            <option value="9">Period 9</option>
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <label for="subject" class="formbold-form-label">
-          <b> Subject of the period </b>
-        </label>
-        <div
-          style="
-            border: 1px solid #ccc;
-            padding: 10px;
-            background-color: #fff;
-            border-radius: 8px;
-          "
+      SRM Class Finder
+    </h2>
+    <div class="formbold-btn-container">
+      <a href="/create" class="formbold-btn1">Create Form</a>
+    </div>
+    <div class="formbold-main-wrapper" style="padding:8px;">
+      <div class="formbold-form-wrapper">
+        <form
+          style="background-color: #f1ffff; border-radius: 10px; outline: none"
+          id="form"
+          method="post"
         >
-          {% if result %}
-          <label for="message" class="formbold-form-label">
-            <b>Staff Name:</b> {{ result['Staff Name'] }}
-          </label>
-          <br />
-          <label for="message" class="formbold-form-label">
-            <b>Subject:</b> {{ result['Subject'] }}
-          </label>
-          <br />
-          <label for="message" class="formbold-form-label">
-            <b>Room No:</b> {{ result['Room No'] }}
-          </label>
-          <br />
-          <label for="message" class="formbold-form-label">
-            <b>Class:</b> {{ result['Class'] }}
-          </label>
-          {% else %}
-          <label for="message" class="formbold-form-label">
-            No matching record found.
-          </label>
-          {% endif %}
-        </div>
+          <div class="formbold-input-flex">
+            <div>
+              <label for="department" class="formbold-form-label">
+                <b>Department</b>
+              </label>
+              <select
+                id="department"
+                name="department"
+                class="formbold-form-input"
+                placeholder="CSE"
+              >
+                {% for department in departments %}
+                <option value="{{ department }}">{{ department }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="staffName" class="formbold-form-label">
+                <b>Staff Name</b>
+              </label>
+              <select
+                id="staffName"
+                name="staffName"
+                placeholder="Jane"
+                class="formbold-form-input"
+              >
+                {% for staffName in staffNames %}
+                <option value="{{ staffName }}">{{ staffName }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label for="class" class="formbold-form-label">
+                <b>Class</b>
+              </label>
+              <input
+                type="text"
+                name="class"
+                id="class"
+                placeholder="II CS A"
+                class="formbold-form-input"
+              />
+            </div>
+          </div>
+
+          <div class="formbold-input-flex">
+            <div>
+              <label for="roomNo" class="formbold-form-label"
+                ><b> Room No </b></label
+              >
+              <input
+                type="text"
+                name="roomNo"
+                id="roomNo"
+                placeholder="403"
+                class="formbold-form-input"
+              />
+            </div>
+            <div>
+              <label for="day" class="formbold-form-label"><b>Day</b></label>
+              <select name="day" id="day" class="formbold-form-input" required>
+                <option value="" disabled selected>Select a day</option>
+                <option value="1">Day 1</option>
+                <option value="2">Day 2</option>
+                <option value="3">Day 3</option>
+                <option value="4">Day 4</option>
+                <option value="5">Day 5</option>
+              </select>
+            </div>
+            <div>
+              <label for="period" class="formbold-form-label"
+                ><b>Period</b></label
+              >
+              <select
+                name="period"
+                id="period"
+                class="formbold-form-input"
+                required
+              >
+                <option value="" disabled selected>Select a period</option>
+                <option value="1">1(8.30-9.20)</option>
+                <option value="2">2(9.20-10.10)</option>
+                <option value="3">3(10.10-11.00)</option>
+                <option value="4">4(11.00-11.50)</option>
+                <option value="5">5(11.50-12.40)</option>
+                <option value="6">6(12.40-13.30)</option>
+                <option value="7">7(13.30-14.15)</option>
+                <option value="8">8(14.15-15.00)</option>
+                <option value="9">9(15.00-15.45)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="subject" class="formbold-form-label">
+              <b> Subject of the period </b>
+            </label>
+            <div
+              style="
+                border: 1px solid #ccc;
+                padding: 10px;
+                background-color: #fff;
+                border-radius: 8px;
+              "
+            >
+              {% if result %}
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1;display:flex;padding-right:10px;"
+              >
+                <h4><i>Staff Name:</i></h4>
+                <h3 style="color: #010102;padding-left:10px;">{{ result['Staff Name'] }}</h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1;display:flex;padding-right:10px;"
+              >
+                <h4><i>Subject:</i></h4>
+                <h3 style="color: #010102;padding-left:10px;">{{ result['Subject'] }}</h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1;display:flex;padding-right:10px;"
+              >
+                <h4><i>Room No:</i></h4>
+                <h3 style="color: #010102;padding-left:10px;">{{ result['Room No'] }}</h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1;display:flex;padding-right:10px;"
+              >
+                <h4><i>Class:</i></h4>
+                <h3 style="color: #010102;padding-left:10px;">{{ result['Class'] }}</h3>
+              </label>
+              {% else %}
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1;display:flex;padding-right:10px;"
+              >
+                No matching record found.
+              </label>
+              {% endif %}
+            </div>
+          </div>
+          <button class="formbold-btn" id="submitBtn" disabled>Search</button>
+          <h3
+            style="
+              display: flex;
+              align-content: center;
+              justify-content: center;
+              padding-top:8px;
+            "
+          >
+            FSH Computer Science
+          </h3>
+        </form>
       </div>
-      <button class="formbold-btn" id="submitBtn" disabled>Search</button>
-    </form>
-  </div>
-</div>
- 
+    </div>
+  </body>
+</html>

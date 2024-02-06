@@ -1,27 +1,15 @@
 import pandas as pd
 import gspread
-from google.oauth2 import service_account
+from timeTable.sheets import authorizeAndGetSheet
 
 
 def readSheetFromGoogle():
-    scopes = [
-        "https://spreadsheets.google.com/feeds",
-        "https://www.googleapis.com/auth/drive",
-    ]
-    credentials = service_account.Credentials.from_service_account_file(
-        "./timeTable/credentials.json", scopes=scopes
-    )
-    googleCredentials = gspread.authorize(credentials)
-    spreadsheetTitle = "SRM_Time_Table"
+    sheetsAndGoogleCredentials = authorizeAndGetSheet()
     try:
-        sheet = googleCredentials.open(spreadsheetTitle)
-    except gspread.exceptions.SpreadsheetNotFound:
-        sheet = googleCredentials.create(spreadsheetTitle)
-
-    worksheetTitle = "Time_Table"
-    try:
-        sheet = googleCredentials.open(spreadsheetTitle)
-        worksheet = sheet.worksheet(worksheetTitle)
+        sheet = sheetsAndGoogleCredentials["googleCredentials"].open(
+            sheetsAndGoogleCredentials["spreadsheetTitle"]
+        )
+        worksheet = sheet.worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
         values = worksheet.get_all_values()
         df = pd.DataFrame(values[1:], columns=values[0])
         return df
