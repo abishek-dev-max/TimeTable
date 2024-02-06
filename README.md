@@ -26,6 +26,7 @@ The project is organized into the following main components:
    ```bash
    pip install -r requirements.txt
 2.Run command for the project:
+    ```bash
     flask --app timeTable.app  run
 ## Run the Flask application
 python -m flask run
