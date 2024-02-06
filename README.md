@@ -25,9 +25,12 @@ The project is organized into the following main components:
 1. Install the required dependencies by running:
    ```bash
    pip install -r requirements.txt
+   
+## Development
 
-## Run the Flask application
-python -m flask run
+1. Run Command for the Project:
+   ```bash
+    flask --app timeTable.app  run
 
 This project is licensed under the MIT License.
 
