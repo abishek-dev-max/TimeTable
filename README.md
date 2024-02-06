@@ -21,15 +21,14 @@ The project is organized into the following main components:
 - **`templates` Folder**: Contains HTML templates used by Flask for rendering views.
 
 ## Setup
-
-1. Install the required dependencies by running:
+ Install the required dependencies by running:
    ```bash
    pip install -r requirements.txt
-2. Run command for app :
+
+## Run the Flask application
+  Run command for app :
    ```bash
     flask --app timeTable.app  run
-## Run the Flask application
-python -m flask run
 
 This project is licensed under the MIT License.
 
