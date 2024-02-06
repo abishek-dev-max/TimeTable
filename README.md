@@ -28,11 +28,9 @@ The project is organized into the following main components:
    
 ## Setup
 
-1. Run COmmand for the Project:
+1. Run Command for the Project:
    ```bash
     flask --app timeTable.app  run
-
-   
 
 This project is licensed under the MIT License.
 
