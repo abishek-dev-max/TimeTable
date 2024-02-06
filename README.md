@@ -28,7 +28,7 @@ The project is organized into the following main components:
    
 ## Run the Flask application
  ```bash
-   pip install -r requirements.txt
+ 1. flask --app timeTable.app  run
 
 This project is licensed under the MIT License.
 
