@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap";
 * {
   margin: 0;
   padding: 0;
@@ -15,14 +15,12 @@ body {
   padding: 48px;
   background-color: #f7ffff;
 }
-
 .formbold-form-wrapper {
   margin: 0 auto;
   max-width: 550px;
   width: 100%;
-  background: white;
+  background: #fff;
 }
-
 .formbold-input-flex {
   display: flex;
   gap: 20px;
@@ -31,7 +29,6 @@ body {
 .formbold-input-flex > div {
   width: 50%;
 }
-
 .formbold-input-radio-wrapper {
   margin-bottom: 28px;
 }
@@ -63,7 +60,7 @@ body {
   left: 0;
   height: 18px;
   width: 18px;
-  background-color: #ffffff;
+  background-color: #fff;
   border: 1px solid #dde3ec;
   border-radius: 50%;
 }
@@ -77,29 +74,26 @@ body {
   position: absolute;
   display: none;
 }
-
 .formbold-radio-label
   .formbold-input-radio:checked
   ~ .formbold-radio-checkmark:after {
   display: block;
 }
-
 .formbold-radio-label .formbold-radio-checkmark:after {
   top: 50%;
   left: 50%;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #ffffff;
+  background: #fff;
   transform: translate(-50%, -50%);
 }
-
 .formbold-form-input {
   width: 100%;
   padding: 13px 22px;
   border-radius: 5px;
   border: 1px solid #dde3ec;
-  background: #ffffff;
+  background: #fff;
   font-weight: 500;
   font-size: 16px;
   color: #07074d;
@@ -111,7 +105,7 @@ body {
 }
 .formbold-form-input:focus {
   border-color: #6a64f1;
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 .formbold-form-label {
   color: #07074d;
@@ -120,7 +114,6 @@ body {
   display: block;
   margin-bottom: 10px;
 }
-
 .formbold-btn {
   text-align: center;
   width: 100%;
@@ -130,18 +123,17 @@ body {
   border: none;
   font-weight: 500;
   background-color: #6a64f1;
-  color: white;
+  color: #fff;
   cursor: pointer;
   margin-top: 25px;
 }
-
 .formbold-btn:disabled {
   background-color: #d3d3d3;
-  color: #808080;
+  color: gray;
   cursor: not-allowed;
 }
 .formbold-btn:hover {
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 .formbold-btn1 {
   text-align: center;
@@ -151,13 +143,13 @@ body {
   border: none;
   font-weight: 500;
   background-color: #6a64f1;
-  color: white;
+  color: #fff;
   cursor: pointer;
   margin-top: 25px;
   text-decoration: none;
 }
 .formbold-btn1:hover {
-  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
 }
 .formbold-btn-container {
   display: flex;
@@ -167,7 +159,6 @@ body {
   text-align: center;
   margin-right: 30px;
 }
-
 h2 {
   color: #6c66e4;
   margin-bottom: 10px;

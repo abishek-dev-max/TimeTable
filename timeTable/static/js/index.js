@@ -40,5 +40,4 @@ document.addEventListener("DOMContentLoaded", function () {
   departmentDropdown.addEventListener("change", updateStaffNames);
 
   updateStaffNames();
-
 });
