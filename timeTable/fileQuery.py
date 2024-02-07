@@ -1,15 +1,17 @@
 import pandas as pd
 import gspread
 from timeTable.sheets import authorizeAndGetSheet
-
+from timeTable.enums import googleSheet
 
 def readSheetFromGoogle():
     sheetsAndGoogleCredentials = authorizeAndGetSheet()
     try:
-        sheet = sheetsAndGoogleCredentials["googleCredentials"].open(
-            sheetsAndGoogleCredentials["spreadsheetTitle"]
+        sheet = sheetsAndGoogleCredentials[googleSheet.SheetName.GoogleCredential.value].open(
+            sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name]
         )
-        worksheet = sheet.worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
+        worksheet = sheet.worksheet(
+            sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
+        )
         values = worksheet.get_all_values()
         df = pd.DataFrame(values[1:], columns=values[0])
         return df

@@ -1,17 +1,13 @@
-from flask import Blueprint, render_template, request, make_response, redirect, url_for
-import pandas as pd
-from timeTable.sheets import (
-    authorizeAndGetSheet,
-    getStaffNameByDepartment,
-)
-from timeTable.form import submitForm, searchQuery
+from flask import Blueprint, render_template, request, redirect, url_for,session
+from timeTable.sheets import getStaffNameByDepartment, download
+from timeTable.form import submitForm, searchData
 
 bluePrintOfPages = Blueprint("pages", __name__)
 
 
 @bluePrintOfPages.route("/")
 def home():
-    return redirect(url_for("pages.createForm"))
+    return redirect(url_for("pages.searchForm"))
 
 
 @bluePrintOfPages.route("/form", methods=["GET", "POST"])
@@ -20,8 +16,10 @@ def searchForm():
     departments = staffAndDepartmentData["departments"]
     staffNames = staffAndDepartmentData["staffNames"]
     departmentToStaff = staffAndDepartmentData["departmentToStaff"]
+    result = None
+
     if request.method == "POST":
-        result=searchQuery(request.form)
+        result = searchData()
         return render_template(
             "pages/searchForm.html",
             result=result,
@@ -29,10 +27,9 @@ def searchForm():
             staffNames=staffNames,
             departmentToStaff=departmentToStaff,
         )
-
     return render_template(
         "pages/searchForm.html",
-        result="Enter your Inputs",
+        result=result,
         departments=departments,
         staffNames=staffNames,
         departmentToStaff=departmentToStaff,
@@ -55,22 +52,4 @@ def submit():
 
 @bluePrintOfPages.route("/download")
 def download():
-    try:
-        sheetsAndGoogleCredentials = authorizeAndGetSheet()
-        sheet = (
-            sheetsAndGoogleCredentials["googleCredentials"]
-            .open(sheetsAndGoogleCredentials["spreadsheetTitle"])
-            .worksheet(sheetsAndGoogleCredentials["worksheetTitle"])
-        )
-
-        sheet_data = sheet.get_all_values()
-        df = pd.DataFrame(sheet_data[1:], columns=sheet_data[0])
-
-        response = make_response(df.to_csv(index=False))
-        response.headers["Content-Disposition"] = "attachment; filename=periodForm.csv"
-        response.headers["Content-type"] = "text/csv"
-
-        return response
-
-    except FileNotFoundError:
-        return "File not found", 404
+    download()

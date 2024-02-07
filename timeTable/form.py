@@ -24,18 +24,16 @@ def submitForm():
     }
     writeToGoogleDrive(periodForm)
 
-
-def searchQuery(formData):
-    staffName = formData["staffName"]
-    roomNo = formData["roomNo"]
-    className = formData["class"]
-    day = formData["day"]
-    period = formData["period"]
+def searchData():
+    staffName = request.form["staffName"]
+    roomNo = request.form["roomNo"]
+    className = request.form["class"]
+    day = request.form["day"]
+    period = request.form["period"]
 
     if roomNo:
         roomNo = int(roomNo)
     else:
         roomNo = 0
-
     result = query(int(day), int(period), staffName, roomNo, className)
     return result
