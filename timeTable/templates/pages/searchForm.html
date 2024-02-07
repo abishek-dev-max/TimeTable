@@ -14,19 +14,13 @@
     <script src="{{ url_for('static', filename='index.js') }}" defer></script>
   </head>
   <body>
-    <h2
-      style="
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      "
-    >
+    <h2 style="display: flex; flex-direction: column; align-items: center">
       SRM Class Finder
     </h2>
     <div class="formbold-btn-container">
       <a href="/create" class="formbold-btn1">Create Form</a>
     </div>
-    <div class="formbold-main-wrapper" style="padding:8px;">
+    <div class="formbold-main-wrapper" style="padding: 8px">
       <div class="formbold-form-wrapper">
         <form
           style="background-color: #f1ffff; border-radius: 10px; outline: none"
@@ -142,56 +136,103 @@
               <label
                 for="message"
                 class="formbold-form-label"
-                style="color: #6a64f1;display:flex;padding-right:10px;"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
               >
                 <h4><i>Staff Name:</i></h4>
-                <h3 style="color: #010102;padding-left:10px;">{{ result['Staff Name'] }}</h3>
+                <h3 style="color: #010102; padding-left: 10px">
+                  {{ result['Staff Name'] }}
+                </h3>
               </label>
               <br />
               <label
                 for="message"
                 class="formbold-form-label"
-                style="color: #6a64f1;display:flex;padding-right:10px;"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
               >
                 <h4><i>Subject:</i></h4>
-                <h3 style="color: #010102;padding-left:10px;">{{ result['Subject'] }}</h3>
+                <h3 style="color: #010102; padding-left: 10px">
+                  {{ result['Subject'] }}
+                </h3>
               </label>
               <br />
               <label
                 for="message"
                 class="formbold-form-label"
-                style="color: #6a64f1;display:flex;padding-right:10px;"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
               >
                 <h4><i>Room No:</i></h4>
-                <h3 style="color: #010102;padding-left:10px;">{{ result['Room No'] }}</h3>
+                <h3 style="color: #010102; padding-left: 10px">
+                  {{ result['Room No'] }}
+                </h3>
               </label>
               <br />
               <label
                 for="message"
                 class="formbold-form-label"
-                style="color: #6a64f1;display:flex;padding-right:10px;"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
               >
                 <h4><i>Class:</i></h4>
-                <h3 style="color: #010102;padding-left:10px;">{{ result['Class'] }}</h3>
-</label>
+                <h3 style="color: #010102; padding-left: 10px">
+                  {{ result['Class'] }}
+                </h3>
+              </label>
               {% else %}
               <label
                 for="message"
                 class="formbold-form-label"
-                style="color: #6a64f1;display:flex;padding-right:10px;"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
               >
-                No matching record found.
+                <h4><i>Staff Name:</i></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
               </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4><i>Subject:</i></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4><i>Room No:</i></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4><i>Class:</i></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
               {% endif %}
             </div>
           </div>
-          <button class="formbold-btn" id="submitBtn" type="submit"  name="submit_button" disabled>Search</button>
+          <button
+            class="formbold-btn"
+            id="submitBtn"
+            type="submit"
+            name="submit_button"
+            disabled
+          >
+            Search
+          </button>
           <h3
             style="
               display: flex;
               align-content: center;
               justify-content: center;
-              padding-top:8px;
+              padding-top: 8px;
             "
           >
             FSH Computer Science
