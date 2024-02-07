@@ -1,14 +1,23 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+    default-src 'self';
+    img-src *;
+    script-src 'self' 'unsafe-inline';
+    style-src 'self' 'unsafe-inline';
+    font-src 'self';
+"
+    />
     <title>SRM Timetable Finder</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='styles.css') }}"
     />
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}" defer></script>
   </head>
   <body>
     <h2
@@ -138,15 +147,15 @@
                 required
               >
                 <option value="" disabled selected>Select a period</option>
-                <option value="1"> 1(8.30-9.20)</option>
-                <option value="2"> 2(9.20-10.10)</option>
-                <option value="3"> 3(10.10-11.00)</option>
-                <option value="4"> 4(11.00-11.50)</option>
-                <option value="5"> 5(11.50-12.40)</option>
-                <option value="6"> 6(12.40-13.30)</option>
-                <option value="7"> 7(13.30-14.15)</option>
-                <option value="8"> 8(14.15-15.00)</option>
-                <option value="9"> 9(15.00-15.45)</option>
+                <option value="1">1(8.30-9.20)</option>
+                <option value="2">2(9.20-10.10)</option>
+                <option value="3">3(10.10-11.00)</option>
+                <option value="4">4(11.00-11.50)</option>
+                <option value="5">5(11.50-12.40)</option>
+                <option value="6">6(12.40-13.30)</option>
+                <option value="7">7(13.30-14.15)</option>
+                <option value="8">8(14.15-15.00)</option>
+                <option value="9">9(15.00-15.45)</option>
               </select>
             </div>
           </div>

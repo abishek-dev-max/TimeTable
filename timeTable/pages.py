@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for,session
+from flask import Blueprint, render_template, request, redirect, url_for
 from timeTable.sheets import getStaffNameByDepartment, download
 from timeTable.form import submitForm, searchData
 
@@ -47,7 +47,7 @@ def submit():
         submitForm()
         return render_template("pages/successPage.html")
     else:
-        return render_template("404.html"), 404
+        return 404
 
 
 @bluePrintOfPages.route("/download")
