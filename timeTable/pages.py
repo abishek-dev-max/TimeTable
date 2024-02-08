@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for , session
 from timeTable.sheets import getStaffNameByDepartment, download
 from timeTable.form import submitForm, searchData
 
@@ -16,17 +16,16 @@ def searchForm():
     departments = staffAndDepartmentData["departments"]
     staffNames = staffAndDepartmentData["staffNames"]
     departmentToStaff = staffAndDepartmentData["departmentToStaff"]
-    result = None
 
     if request.method == "POST":
         result = searchData()
-        return render_template(
-            "pages/searchForm.html",
-            result=result,
-            departments=departments,
-            staffNames=staffNames,
-            departmentToStaff=departmentToStaff,
-        )
+        session["search_result"] = result
+        return redirect(
+            url_for(".searchForm")
+        )  
+
+    result = session.pop("search_result", None)
+
     return render_template(
         "pages/searchForm.html",
         result=result,
