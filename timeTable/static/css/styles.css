@@ -136,18 +136,18 @@ body {
 
 .button-container {
   display: flex;
-  justify-content: space-around; 
-  margin-top: 25px; 
+  justify-content: space-around;
+  margin-top: 25px;
 }
 
 .clear-btn {
-  background-color: #f16464; 
+  background-color: #f16464;
 }
 
 .formbold-btn {
-  width: auto; 
-  flex-grow: 1; 
-  margin: 0 10px; 
+  width: auto;
+  flex-grow: 1;
+  margin: 0 10px;
 }
 .formbold-btn:hover {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
@@ -175,6 +175,17 @@ body {
   justify-content: end;
   text-align: center;
   margin-right: 30px;
+}
+
+@media (max-width: 768px) {
+  .formbold-btn-container {
+    align-items: center;
+    margin-right: 0;
+    margin-bottom: 20px;
+    justify-content: center;
+    padding: 10px;
+    font-size: 14px;
+  }
 }
 h2 {
   color: #6c66e4;
