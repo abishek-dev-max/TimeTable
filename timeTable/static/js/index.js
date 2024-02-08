@@ -1,43 +1,75 @@
-function resetForm() {
-  document.getElementById("form").reset();
-}
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("form");
   const submitBtn = document.getElementById("submitBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const departmentDropdown = document.getElementById("department");
+  const staffNameDropdown = document.getElementById("staffName");
 
-  form.addEventListener("input", function () {
+  function checkRequiredFields() {
     const requiredFields = form.querySelectorAll("[required]");
     const allFilled = [...requiredFields].every(
       (field) => field.value.trim() !== ""
     );
 
     submitBtn.disabled = !allFilled;
-  });
-});
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-  var departmentDropdown = document.getElementById("department");
-  var staffNameDropdown = document.getElementById("staffName");
-
-  var departmentToStaffMap = departmentToStaff;
   function updateStaffNames() {
     staffNameDropdown.innerHTML = "";
 
     var selectedDepartment = departmentDropdown.value;
+    var departmentToStaffMap = departmentToStaff;
 
     if (selectedDepartment in departmentToStaffMap) {
       var uniqueStaffNames = new Set(departmentToStaffMap[selectedDepartment]);
       var sortedStaffNames = Array.from(uniqueStaffNames).sort();
-      sortedStaffNames.forEach(function (staffName) {
+
+      if (sortedStaffNames.length === 0) {
+        addPlaceholderOption();
+      }
+
+      sortedStaffNames.forEach((staffName) => {
         var option = document.createElement("option");
         option.value = staffName;
         option.text = staffName;
         staffNameDropdown.add(option);
       });
+    } else {
+      addPlaceholderOption();
     }
   }
 
-  departmentDropdown.addEventListener("change", updateStaffNames);
+  function addPlaceholderOption() {
+    var placeholderOption = document.createElement("option");
+    placeholderOption.value = "none";
+    placeholderOption.text = "Select a staff";
+    placeholderOption.selected = true;
+    placeholderOption.disabled = true;
+    staffNameDropdown.add(placeholderOption);
+  }
+  form.addEventListener("input", function () {
+    checkRequiredFields();
+  });
+
+  departmentDropdown.addEventListener("change", function () {
+    updateStaffNames();
+    checkRequiredFields();
+  });
+
+  clearBtn.addEventListener("click", function () {
+    form.reset();
+
+    document
+      .querySelectorAll(".formbold-form-label h3")
+      .forEach(function (item) {
+        item.innerHTML = "";
+      });
+
+    updateStaffNames();
+
+    checkRequiredFields();
+  });
 
   updateStaffNames();
+  checkRequiredFields();
 });

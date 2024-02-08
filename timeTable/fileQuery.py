@@ -6,9 +6,9 @@ from timeTable.enums import googleSheet
 def readSheetFromGoogle():
     sheetsAndGoogleCredentials = authorizeAndGetSheet()
     try:
-        sheet = sheetsAndGoogleCredentials[googleSheet.SheetName.GoogleCredential.value].open(
-            sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name]
-        )
+        sheet = sheetsAndGoogleCredentials[
+            googleSheet.SheetName.GoogleCredential.value
+        ].open(sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name])
         worksheet = sheet.worksheet(
             sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
         )
@@ -41,7 +41,7 @@ def query(
 ):
     query = timeTable.query("Day == @day and Period == @period")
 
-    if staffName is not None:
+    if staffName is not None and staffName != "":
         query = query[query["Staff Name"].str.contains(staffName, case=False, na=False)]
     if roomNo:
         query = query[query["Room No"] == roomNo]

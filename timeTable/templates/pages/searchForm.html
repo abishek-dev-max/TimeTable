@@ -48,6 +48,7 @@
                 class="formbold-form-input"
                 placeholder="CSE"
               >
+                <option value="" selected>Select a department</option>
                 {% for department in departments %}
                 <option value="{{ department }}">{{ department }}</option>
                 {% endfor %}
@@ -63,9 +64,6 @@
                 placeholder="Jane"
                 class="formbold-form-input"
               >
-                {% for staffName in staffNames %}
-                <option value="{{ staffName }}">{{ staffName }}</option>
-                {% endfor %}
               </select>
             </div>
             <div>
@@ -228,15 +226,10 @@
               {% endif %}
             </div>
           </div>
-          <button
-            class="formbold-btn"
-            id="submitBtn"
-            type="submit"
-            name="submit_button"
-            disabled
-          >
-            Search
-          </button>
+          <div class="button-container">
+        <button class="formbold-btn" type="submit" id="submitBtn" value="Submit" disabled>Search</button>
+       <button class="formbold-btn clear-btn" type="button" id="clearBtn">Clear</button>
+    </div>
           <h3
             style="
               display: flex;

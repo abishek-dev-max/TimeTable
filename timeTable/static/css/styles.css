@@ -127,10 +127,27 @@ body {
   cursor: pointer;
   margin-top: 25px;
 }
+
 .formbold-btn:disabled {
   background-color: #d3d3d3;
   color: gray;
   cursor: not-allowed;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around; 
+  margin-top: 25px; 
+}
+
+.clear-btn {
+  background-color: #f16464; 
+}
+
+.formbold-btn {
+  width: auto; 
+  flex-grow: 1; 
+  margin: 0 10px; 
 }
 .formbold-btn:hover {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);

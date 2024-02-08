@@ -25,11 +25,11 @@ def submitForm():
     writeToGoogleDrive(periodForm)
 
 def searchData():
-    staffName = request.form["staffName"]
-    roomNo = request.form["roomNo"]
-    className = request.form["class"]
-    day = request.form["day"]
-    period = request.form["period"]
+    staffName = request.form.get('staffName')
+    roomNo = request.form.get('roomNo')
+    className = request.form.get('class')  
+    day = request.form.get('day')
+    period = request.form.get('period')
 
     if roomNo:
         roomNo = int(roomNo)
