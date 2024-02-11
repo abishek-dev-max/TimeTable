@@ -25,14 +25,7 @@ def authorizeAndGetSheet():
 
 
 def getStaffNameByDepartment():
-    sheetsAndGoogleCredentials = authorizeAndGetSheet()
-    sheet = (
-        sheetsAndGoogleCredentials[googleSheet.SheetName.GoogleCredential.value]
-        .open(sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name])
-        .worksheet(
-            sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
-        )
-    )
+    sheet = openSheet()
     if sheet:
         data = sheet.get_all_records()
         departmentToStaff = {}
@@ -57,51 +50,33 @@ def getStaffNameByDepartment():
         return "Error accessing Google Sheets", 500
 
 
-getStaffNameByDepartment()
-
-
 def writeToGoogleDrive(data):
-    sheetsAndGoogleCredentials = authorizeAndGetSheet()
-    try:
-        sheet = sheetsAndGoogleCredentials[
-            googleSheet.SheetName.GoogleCredential.value
-        ].open(sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name])
-    except gspread.exceptions.SpreadsheetNotFound:
-        sheet = sheetsAndGoogleCredentials[
-            googleSheet.SheetName.GoogleCredential.value
-        ].create(
-            sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name]
-        )
-
-    worksheet = sheet.worksheet(
-        sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
-    )
-
+    worksheet = openSheet()
     df = pd.DataFrame([data])
     worksheet.append_rows(df.values.tolist())
 
 
-def download():
+def downloadCSV():
     try:
-        sheetsAndGoogleCredentials = authorizeAndGetSheet()
-        sheet = (
-            sheetsAndGoogleCredentials[googleSheet.SheetName.GoogleCredential.value]
-            .open(
-                sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name]
-            )
-            .worksheet(
-                sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
-            )
-        )
-
-        sheet_data = sheet.get_all_values()
-        df = pd.DataFrame(sheet_data[1:], columns=sheet_data[0])
-
+        sheet = openSheet()
+        sheetData = sheet.get_all_values()
+        df = pd.DataFrame(sheetData[1:], columns=sheetData[0])
         response = make_response(df.to_csv(index=False))
         response.headers["Content-Disposition"] = "attachment; filename=periodForm.csv"
         response.headers["Content-type"] = "text/csv"
 
         return response
-
     except FileNotFoundError:
         return "File not found", 404
+
+
+def openSheet():
+    sheetsAndGoogleCredentials = authorizeAndGetSheet()
+    sheet = sheetsAndGoogleCredentials[
+        googleSheet.SheetName.GoogleCredential.value
+    ].open(sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name])
+
+    worksheet = sheet.worksheet(
+        sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
+    )
+    return worksheet

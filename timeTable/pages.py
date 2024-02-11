@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, redirect, url_for , session
-from timeTable.sheets import getStaffNameByDepartment, download
+from flask import Blueprint, render_template, request, redirect, url_for, session
+from timeTable.sheets import getStaffNameByDepartment, downloadCSV
 from timeTable.form import submitForm, searchData
 
 bluePrintOfPages = Blueprint("pages", __name__)
@@ -20,9 +20,7 @@ def searchForm():
     if request.method == "POST":
         result = searchData()
         session["search_result"] = result
-        return redirect(
-            url_for(".searchForm")
-        )  
+        return redirect(url_for(".searchForm"))
 
     result = session.pop("search_result", None)
 
@@ -51,4 +49,4 @@ def submit():
 
 @bluePrintOfPages.route("/download")
 def download():
-    download()
+    return downloadCSV()

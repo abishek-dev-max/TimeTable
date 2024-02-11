@@ -1,22 +1,12 @@
 import pandas as pd
-import gspread
-from timeTable.sheets import authorizeAndGetSheet
-from timeTable.enums import googleSheet
+from timeTable.sheets import openSheet
+
 
 def readSheetFromGoogle():
-    sheetsAndGoogleCredentials = authorizeAndGetSheet()
-    try:
-        sheet = sheetsAndGoogleCredentials[
-            googleSheet.SheetName.GoogleCredential.value
-        ].open(sheetsAndGoogleCredentials[googleSheet.SheetName.spreadsheetTitle.name])
-        worksheet = sheet.worksheet(
-            sheetsAndGoogleCredentials[googleSheet.SheetName.worksheetTitle.name]
-        )
-        values = worksheet.get_all_values()
-        df = pd.DataFrame(values[1:], columns=values[0])
-        return df
-    except gspread.exceptions.SpreadsheetNotFound:
-        raise FileNotFoundError("Google Sheet not found.")
+    worksheet = openSheet()
+    values = worksheet.get_all_values()
+    df = pd.DataFrame(values[1:], columns=values[0])
+    return df
 
 
 def convertDatatypes():
