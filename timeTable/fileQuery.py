@@ -58,3 +58,29 @@ def query(
         return result
     else:
         return {"error": "No matching record found."}
+
+
+def getStaffNameByDepartment():
+    sheet = openSheet() 
+    if sheet:
+        data = sheet.get_all_records()
+        departmentToStaff = {}
+
+        for entry in data:
+            department = entry["Department"]
+            staff_name = entry["Staff Name"]
+
+            if department in departmentToStaff:
+                departmentToStaff[department].append(staff_name)
+            else:
+                departmentToStaff[department] = [staff_name]
+
+        departments = list(set(entry["Department"] for entry in data))
+        staffNames = list(set(entry["Staff Name"] for entry in data))
+        return {
+            "departments": departments,
+            "staffNames": staffNames,
+            "departmentToStaff": departmentToStaff,            
+        }
+    else:
+        return "Error accessing Google Sheets", 500

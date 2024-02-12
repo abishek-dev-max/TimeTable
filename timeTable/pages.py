@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from timeTable.sheets import getStaffNameByDepartment, downloadCSV
+from timeTable.sheets import downloadCSV
 from timeTable.form import submitForm, searchData
+from timeTable.fileQuery import getStaffNameByDepartment
 
 bluePrintOfPages = Blueprint("pages", __name__)
 
