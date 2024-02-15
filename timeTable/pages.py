@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from timeTable.sheets import downloadCSV
-from timeTable.form import submitForm, searchData
+from timeTable.form import searchData
 from timeTable.fileQuery import getStaffNameByDepartment
 
 bluePrintOfPages = Blueprint("pages", __name__)
@@ -34,20 +33,20 @@ def searchForm():
     )
 
 
-@bluePrintOfPages.route("/create")
-def createForm():
-    return render_template("pages/createForm.html")
+# @bluePrintOfPages.route("/create")
+# def createForm():
+#     return render_template("pages/createForm.html")
 
 
-@bluePrintOfPages.route("/submit", methods=["POST"])
-def submit():
-    if request.method == "POST":
-        submitForm()
-        return render_template("pages/successPage.html")
-    else:
-        return 404
+# @bluePrintOfPages.route("/submit", methods=["POST"])
+# def submit():
+#     if request.method == "POST":
+#         submitForm()
+#         return render_template("pages/successPage.html")
+#     else:
+#         return 404
 
 
-@bluePrintOfPages.route("/download")
-def download():
-    return downloadCSV()
+# @bluePrintOfPages.route("/download")
+# def download():
+#     return downloadCSV()
