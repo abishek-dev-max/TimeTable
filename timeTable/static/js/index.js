@@ -17,12 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateStaffNames() {
     staffNameDropdown.innerHTML = "";
 
-    var selectedDepartment = departmentDropdown.value;
-    var departmentToStaffMap = departmentToStaff;
-
-    if (selectedDepartment in departmentToStaffMap) {
-      var uniqueStaffNames = new Set(departmentToStaffMap[selectedDepartment]);
-      var sortedStaffNames = Array.from(uniqueStaffNames).sort();
+    if (departmentDropdown.value in departmentToStaff) {
+      var sortedStaffNames = Array.from(
+        departmentToStaff[departmentDropdown.value]
+      ).sort();
 
       if (sortedStaffNames.length === 0) {
         addPlaceholderOption();
@@ -65,11 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
         item.innerHTML = "";
       });
 
-    updateStaffNames();
+updateStaffNames();
 
     checkRequiredFields();
   });
 
-  updateStaffNames();
+updateStaffNames();
   checkRequiredFields();
 });

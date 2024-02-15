@@ -29,18 +29,18 @@ def query(
     roomNo=None,
     className=None,
 ):
-    query = timeTable.query("Day == @day and Period == @period")
+    querySubject = timeTable.query("Day == @day and Period == @period")
 
     if staffName is not None and staffName != "":
-        query = query[query["Staff Name"].str.contains(staffName, case=False, na=False)]
+        querySubject = querySubject[querySubject["Staff Name"].str.contains(staffName, case=False, na=False)]
     if roomNo:
-        query = query[query["Room No"] == roomNo]
+        querySubject = querySubject[querySubject["Room No"] == roomNo]
     if className:
-        query = query[query["Class"] == className]
+        querySubject = querySubject[querySubject["Class"] == className]
 
-    if not query.empty:
+    if not querySubject.empty:
         result = (
-            query[
+            querySubject[
                 [
                     "Staff ID",
                     "Staff Name",
@@ -68,12 +68,13 @@ def getStaffNameByDepartment():
 
         for entry in data:
             department = entry["Department"]
-            staff_name = entry["Staff Name"]
+            staffName = entry["Staff Name"]
 
             if department in departmentToStaff:
-                departmentToStaff[department].append(staff_name)
+                if staffName not in departmentToStaff[department]:
+                    departmentToStaff[department].append(staffName)
             else:
-                departmentToStaff[department] = [staff_name]
+                departmentToStaff[department] = [staffName]
 
         departments = list(set(entry["Department"] for entry in data))
         staffNames = list(set(entry["Staff Name"] for entry in data))
