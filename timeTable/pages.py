@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from timeTable.form import searchData
-from timeTable.fileQuery import getStaffNameByDepartment
+from timeTable.fileQuery import getStaffNameByDepartment,getStaffNamesAndDepartments
 
 bluePrintOfPages = Blueprint("pages", __name__)
 
@@ -12,10 +12,10 @@ def home():
 
 @bluePrintOfPages.route("/form", methods=["GET", "POST"])
 def searchForm():
-    staffAndDepartmentData = getStaffNameByDepartment()
-    departments = staffAndDepartmentData["departments"]
-    staffNames = staffAndDepartmentData["staffNames"]
-    departmentToStaff = staffAndDepartmentData["departmentToStaff"]
+    staffAndDepartmentMapper = getStaffNameByDepartment()
+    staffNamesAndDepartments = getStaffNamesAndDepartments()
+    departments = staffNamesAndDepartments["departments"]
+    staffNames = staffNamesAndDepartments["staffNames"]
 
     if request.method == "POST":
         result = searchData()
@@ -29,24 +29,5 @@ def searchForm():
         result=result,
         departments=departments,
         staffNames=staffNames,
-        departmentToStaff=departmentToStaff,
+        departmentToStaff=staffAndDepartmentMapper,
     )
-
-
-# @bluePrintOfPages.route("/create")
-# def createForm():
-#     return render_template("pages/createForm.html")
-
-
-# @bluePrintOfPages.route("/submit", methods=["POST"])
-# def submit():
-#     if request.method == "POST":
-#         submitForm()
-#         return render_template("pages/successPage.html")
-#     else:
-#         return 404
-
-
-# @bluePrintOfPages.route("/download")
-# def download():
-#     return downloadCSV()

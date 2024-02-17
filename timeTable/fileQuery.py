@@ -1,25 +1,8 @@
-import pandas as pd
 from timeTable.sheets import openSheet
-
-
-def readSheetFromGoogle():
-    worksheet = openSheet()
-    values = worksheet.get_all_values()
-    df = pd.DataFrame(values[1:], columns=values[0])
-    return df
-
-
-def convertDatatypes():
-    numeric_columns = ["Room No", "Day", "Period"]
-    timeTable[numeric_columns] = timeTable[numeric_columns].apply(
-        pd.to_numeric, errors="coerce"
-    )
-    string_columns = timeTable.columns.difference(numeric_columns)
-    timeTable[string_columns] = timeTable[string_columns].astype(str)
-
+from timeTable.prepareFileForQuery import readSheetFromGoogle, convertDatatypes
 
 timeTable = readSheetFromGoogle()
-convertDatatypes()
+convertDatatypes(timeTable)
 
 
 def query(
@@ -32,7 +15,9 @@ def query(
     querySubject = timeTable.query("Day == @day and Period == @period")
 
     if staffName is not None and staffName != "":
-        querySubject = querySubject[querySubject["Staff Name"].str.contains(staffName, case=False, na=False)]
+        querySubject = querySubject[
+            querySubject["Staff Name"].str.contains(staffName, case=False, na=False)
+        ]
     if roomNo:
         querySubject = querySubject[querySubject["Room No"] == roomNo]
     if className:
@@ -61,27 +46,44 @@ def query(
 
 
 def getStaffNameByDepartment():
-    sheet = openSheet() 
+    sheet = openSheet()
     if sheet:
         data = sheet.get_all_records()
-        departmentToStaff = {}
+        departmentToStaff = getRelationalItem("Department", "Staff Name", data)
+        return departmentToStaff
+    else:
+        return "Error accessing Google Sheets", 500
 
-        for entry in data:
-            department = entry["Department"]
-            staffName = entry["Staff Name"]
 
-            if department in departmentToStaff:
-                if staffName not in departmentToStaff[department]:
-                    departmentToStaff[department].append(staffName)
-            else:
-                departmentToStaff[department] = [staffName]
-
-        departments = list(set(entry["Department"] for entry in data))
-        staffNames = list(set(entry["Staff Name"] for entry in data))
+def getClassNameByDepartment():
+    sheet = openSheet()
+    if sheet:
+        data = sheet.get_all_records()
+        departmentToClassName = getRelationalItem("Department", "Class", data)
         return {
-            "departments": departments,
-            "staffNames": staffNames,
-            "departmentToStaff": departmentToStaff,            
+            "departmentToClassName": departmentToClassName,
         }
     else:
         return "Error accessing Google Sheets", 500
+
+
+def getStaffNamesAndDepartments():
+    sheet = openSheet()
+    if sheet:
+        data = sheet.get_all_records()
+        departments = list(set(entry["Department"] for entry in data))
+        staffNames = list(set(entry["Staff Name"] for entry in data))
+        return {"departments": departments, "staffNames": staffNames}
+
+
+def getRelationalItem(fieldOne, fieldTwo, data):
+    mapperOfTwoFields = {}
+    for entry in data:
+        inDependentField = entry[fieldOne]
+        dependentField = entry[fieldTwo]
+        if inDependentField in mapperOfTwoFields:
+            if dependentField not in mapperOfTwoFields[inDependentField]:
+                mapperOfTwoFields[inDependentField].append(dependentField)
+        else:
+            mapperOfTwoFields[inDependentField] = [dependentField]
+    return mapperOfTwoFields
