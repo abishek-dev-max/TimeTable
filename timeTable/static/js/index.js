@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function addPlaceholderOption() {
     var placeholderOption = document.createElement("option");
     placeholderOption.value = "none";
-    placeholderOption.text = "Select a staff";
+    placeholderOption.text = "Select";
     placeholderOption.selected = true;
     placeholderOption.disabled = true;
     staffNameDropdown.add(placeholderOption);

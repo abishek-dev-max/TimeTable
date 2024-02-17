@@ -2,8 +2,8 @@ from timeTable.sheets import openSheet
 from timeTable.prepareFileForQuery import readSheetFromGoogle, convertDatatypes
 
 timeTable = readSheetFromGoogle()
-convertDatatypes(timeTable)
 
+convertDatatypes(timeTable)
 
 def query(
     day,

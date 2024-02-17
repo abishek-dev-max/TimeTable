@@ -45,7 +45,7 @@
                 class="formbold-form-input"
                 placeholder="CSE"
               >
-                <option value="" selected>Select a department</option>
+                <option value="" selected>Select</option>
                 {% for department in departments %}
                 <option value="{{ department }}">{{ department }}</option>
                 {% endfor %}
@@ -93,7 +93,7 @@
             <div>
               <label for="day" class="formbold-form-label"><b>Day</b></label>
               <select name="day" id="day" class="formbold-form-input" required>
-                <option value="" disabled selected>Select a day</option>
+                <option value="" disabled selected>Select</option>
                 <option value="1">Day 1</option>
                 <option value="2">Day 2</option>
                 <option value="3">Day 3</option>
@@ -111,7 +111,7 @@
                 class="formbold-form-input"
                 required
               >
-                <option value="" disabled selected>Select a period</option>
+                <option value="" disabled selected>Select</option>
                 <option value="1">1(8.30-9.20)</option>
                 <option value="2">2(9.20-10.10)</option>
                 <option value="3">3(10.10-11.00)</option>
