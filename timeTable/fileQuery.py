@@ -5,6 +5,8 @@ timeTable = readSheetFromGoogle()
 
 convertDatatypes(timeTable)
 
+sheet = openSheet()
+
 def query(
     day,
     period,
@@ -41,12 +43,11 @@ def query(
             .to_dict()
         )
         return result
-    else:
-        return {"error": "No matching record found."}
+    if querySubject.empty:
+        return {"error":"no matching record"}
 
 
 def getStaffNameByDepartment():
-    sheet = openSheet()
     if sheet:
         data = sheet.get_all_records()
         departmentToStaff = getRelationalItem("Department", "Staff Name", data)
@@ -56,19 +57,16 @@ def getStaffNameByDepartment():
 
 
 def getClassNameByDepartment():
-    sheet = openSheet()
     if sheet:
         data = sheet.get_all_records()
         departmentToClassName = getRelationalItem("Department", "Class", data)
-        return {
-            "departmentToClassName": departmentToClassName,
-        }
+        return departmentToClassName,
+        
     else:
         return "Error accessing Google Sheets", 500
 
 
 def getStaffNamesAndDepartments():
-    sheet = openSheet()
     if sheet:
         data = sheet.get_all_records()
         departments = list(set(entry["Department"] for entry in data))
