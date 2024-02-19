@@ -20,8 +20,12 @@
     />
     <script>
       var departmentToStaff = {{ departmentToStaff | tojson }};
+      var departmentToClassName= {{ departmentToClassName | tojson }}
     </script>
     <script src="{{ url_for('static', filename='js/obfuscated.js') }}" defer></script>
+    <script>
+      window.history.forward();
+   </script>
   </head>
   <body>
     <h2 style="display: flex; flex-direction: column; align-items: center">
@@ -37,13 +41,14 @@
           <div class="formbold-input-flex">
             <div>
               <label for="department" class="formbold-form-label">
-                <b>Department</b>
+                <b>Department*</b>
               </label>
               <select
                 id="department"
                 name="department"
                 class="formbold-form-input"
                 placeholder="CSE"
+                required
               >
                 <option value="" selected>Select</option>
                 {% for department in departments %}
@@ -63,17 +68,16 @@
               >
               </select>
             </div>
-            <div>
+             <div>
               <label for="class" class="formbold-form-label">
                 <b>Class</b>
               </label>
-              <input
-                type="text"
-                name="class"
+              <select
                 id="class"
-                placeholder="IICSA"
+                name="class"
                 class="formbold-form-input"
-              />
+              >
+              </select>
             </div>
           </div>
 
@@ -91,7 +95,7 @@
               />
             </div>
             <div>
-              <label for="day" class="formbold-form-label"><b>Day</b></label>
+              <label for="day" class="formbold-form-label"><b>Day*</b></label>
               <select name="day" id="day" class="formbold-form-input" required>
                 <option value="" disabled selected>Select</option>
                 <option value="1">Day 1</option>
@@ -103,7 +107,7 @@
             </div>
             <div>
               <label for="period" class="formbold-form-label"
-                ><b>Period</b></label
+                ><b>Period*</b></label
               >
               <select
                 name="period"
@@ -232,7 +236,7 @@
               display: flex;
               align-content: center;
               justify-content: center;
-              padding-top: 8px;
+              padding-top: 12px;
             "
           >
           SRMIST FSH Computer Science

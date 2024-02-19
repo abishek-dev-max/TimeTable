@@ -8,4 +8,4 @@ class TimeTable(Enum):
     RoomNo = "roomNo"
     Day = "day"
     Period = "period"
-    ClassName = "class"
+    Class = "class"

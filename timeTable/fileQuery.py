@@ -7,6 +7,9 @@ convertDatatypes(timeTable)
 
 sheet = openSheet()
 
+timeTableData = sheet.get_all_records()
+
+
 def query(
     day,
     period,
@@ -44,44 +47,32 @@ def query(
         )
         return result
     if querySubject.empty:
-        return {"error":"no matching record"}
+        return {"error": "no matching record"}
 
 
 def getStaffNameByDepartment():
-    if sheet:
-        data = sheet.get_all_records()
-        departmentToStaff = getRelationalItem("Department", "Staff Name", data)
-        return departmentToStaff
-    else:
-        return "Error accessing Google Sheets", 500
+    departmentToStaff = getRelationalItem("Department", "Staff Name", timeTableData)
+    return departmentToStaff
 
 
 def getClassNameByDepartment():
-    if sheet:
-        data = sheet.get_all_records()
-        departmentToClassName = getRelationalItem("Department", "Class", data)
-        return departmentToClassName,
-        
-    else:
-        return "Error accessing Google Sheets", 500
+    departmentToClassName = getRelationalItem("Department", "Class", timeTableData)
+    return departmentToClassName
 
 
-def getStaffNamesAndDepartments():
-    if sheet:
-        data = sheet.get_all_records()
-        departments = list(set(entry["Department"] for entry in data))
-        staffNames = list(set(entry["Staff Name"] for entry in data))
-        return {"departments": departments, "staffNames": staffNames}
+def getDepartments():
+    departments = list(set(entry["Department"] for entry in timeTableData))
+    return departments
 
 
-def getRelationalItem(fieldOne, fieldTwo, data):
-    mapperOfTwoFields = {}
-    for entry in data:
-        inDependentField = entry[fieldOne]
-        dependentField = entry[fieldTwo]
-        if inDependentField in mapperOfTwoFields:
-            if dependentField not in mapperOfTwoFields[inDependentField]:
-                mapperOfTwoFields[inDependentField].append(dependentField)
+def getRelationalItem(fieldOne, fieldTwo, records):
+    fieldOneToFieldtwoMapping = {}
+    for record in records:
+        fieldOneValue = record[fieldOne]
+        fieldTwoValue = record[fieldTwo]
+        if fieldOneValue in fieldOneToFieldtwoMapping:
+            if fieldTwoValue not in fieldOneToFieldtwoMapping[fieldOneValue]:
+                fieldOneToFieldtwoMapping[fieldOneValue].append(fieldTwoValue)
         else:
-            mapperOfTwoFields[inDependentField] = [dependentField]
-    return mapperOfTwoFields
+            fieldOneToFieldtwoMapping[fieldOneValue] = [fieldTwoValue]
+    return fieldOneToFieldtwoMapping

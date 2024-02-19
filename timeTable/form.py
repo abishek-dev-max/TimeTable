@@ -5,7 +5,7 @@ from timeTable.fileQuery import query
 def searchData():
     staffName = request.form.get(timeTable.TimeTable.StaffName.value)
     roomNo = request.form.get(timeTable.TimeTable.RoomNo.value)
-    className = request.form.get(timeTable.TimeTable.ClassName.value)
+    className = request.form.get(timeTable.TimeTable.Class.value)
     day = request.form.get(timeTable.TimeTable.Day.value)
     period = request.form.get(timeTable.TimeTable.Period.value)
 
