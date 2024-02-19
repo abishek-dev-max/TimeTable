@@ -14,7 +14,7 @@
 "
     />
     <title>SRM Timetable Finder</title>
-    <link 
+    <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/obfuscated.css') }}"
     />
@@ -47,7 +47,6 @@
                 id="department"
                 name="department"
                 class="formbold-form-input"
-                placeholder="CSE"
                 required
               >
                 <option value="" selected>Select</option>
@@ -63,7 +62,6 @@
               <select
                 id="staffName"
                 name="staffName"
-                placeholder="Jane"
                 class="formbold-form-input"
               >
               </select>
@@ -141,7 +139,7 @@
                 border-radius: 8px;
               "
             >
-              {% if result %}
+              {% if result and 'error' not in result  %}
               <label
                 for="message"
                 class="formbold-form-label"
@@ -185,6 +183,10 @@
                   {{ result['Class'] }}
                 </h3>
               </label>
+              {% elif result and 'error' in result %}
+            <div style="color: green; display:flex; justify-content:center;align-items:center;">
+              <h4>{{ result['error'] }}</h4>
+            </div>
               {% else %}
               <label
                 for="message"

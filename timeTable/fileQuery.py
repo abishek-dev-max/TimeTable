@@ -45,9 +45,9 @@ def query(
             .iloc[0]
             .to_dict()
         )
-        return result
-    if querySubject.empty:
-        return {"error": "no matching record"}
+    else:
+        result = {"error": "Free Period"}
+    return result
 
 
 def getStaffNameByDepartment():
