@@ -4,9 +4,7 @@ Welcome to the SRM Time Table App! This Flask-based web application allows users
 
 ## Features
 
-- **Submit Form**: Users can submit time table data using a form.
 - **Search Form**: Users can search for time table data based on various parameters.
-- **CSV Download**: The submitted time table data can be downloaded as a CSV file.
 
 ## Project Structure
 
