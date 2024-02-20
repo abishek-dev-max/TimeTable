@@ -146,6 +146,9 @@ h2 {
   .formbold-form-input {
     font-size: 12px;
   }
+   .formbold-form-label {
+    font-size: 11px; 
+  }
 }
 
 @media (max-width: 768px) {
