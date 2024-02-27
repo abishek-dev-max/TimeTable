@@ -16,7 +16,7 @@
     <title>SRM Timetable Finder</title>
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/styles.css') }}"
+      href="{{ url_for('static', filename='css/obfuscated.css') }}"
     />
     <script>
       var departmentToStaff = {{ departmentToStaff | tojson }};
@@ -184,9 +184,51 @@
                 </h3>
               </label>
               {% elif result and 'error' in result %}
-            <div style="color: green; display:flex; justify-content:center;align-items:center;">
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <br />
+              <div style="color: green; display:flex; justify-content:center;align-items:center; font-size:1.5rem;">
               <h4>{{ result['error'] }}</h4>
-            </div>
+              </div>
+               <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <label
+                for="message"
+                class="formbold-form-label"
+                style="color: #6a64f1; display: flex; padding-right: 10px"
+              >
+                <h4></h4>
+                <h3 style="color: #010102; padding-left: 10px">
+                </h3>
+              </label>
+              <br />
+              <br />
               {% else %}
               <label
                 for="message"
