@@ -1,11 +1,13 @@
 import pandas as pd
 from timeTable.sheets import openSheet
 
-
 def readSheetFromGoogle():
     worksheet = openSheet()
-    values = worksheet.get_all_values()
-    df = pd.DataFrame(values[1:], columns=values[0])
+    sheetValues = worksheet.get_all_records()
+    return sheetValues
+
+def convertSheetDataIntoDataframe(sheetValues):
+    df = pd.DataFrame(sheetValues[1:], columns=sheetValues[0])
     return df
 
 

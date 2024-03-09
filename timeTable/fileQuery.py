@@ -1,14 +1,8 @@
-from timeTable.sheets import openSheet
-from timeTable.prepareFileForQuery import readSheetFromGoogle, convertDatatypes
+from timeTable.prepareFileForQuery import readSheetFromGoogle, convertDatatypes,convertSheetDataIntoDataframe
 
-timeTable = readSheetFromGoogle()
-
+timeTableSheet = readSheetFromGoogle()
+timeTable = convertSheetDataIntoDataframe(timeTableSheet)
 convertDatatypes(timeTable)
-
-sheet = openSheet()
-
-timeTableData = sheet.get_all_records()
-
 
 def query(
     day,
@@ -51,17 +45,17 @@ def query(
 
 
 def getStaffNameByDepartment():
-    departmentToStaff = getRelationalItem("Department", "Staff Name", timeTableData)
+    departmentToStaff = getRelationalItem("Department", "Staff Name", timeTableSheet)
     return departmentToStaff
 
 
 def getClassNameByDepartment():
-    departmentToClassName = getRelationalItem("Department", "Class", timeTableData)
+    departmentToClassName = getRelationalItem("Department", "Class", timeTableSheet)
     return departmentToClassName
 
 
 def getDepartments():
-    departments = list(set(entry["Department"] for entry in timeTableData))
+    departments = list(set(entry["Department"] for entry in timeTableSheet))
     return departments
 
 
