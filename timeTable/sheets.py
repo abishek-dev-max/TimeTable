@@ -22,12 +22,8 @@ def authorizeAndGetSheet():
     credentials = service_account.Credentials.from_service_account_file(
         "./timeTable/credentials.json", scopes=scopes
     )
-    googleCredentials = authorize(credentials)
-
-    spreadsheetTitle = googleSheet.SheetName.spreadsheetTitle.value
-    worksheetTitle = googleSheet.SheetName.worksheetTitle.value
     return {
-        googleSheet.SheetName.googleCredential.value: googleCredentials,
-        googleSheet.SheetName.spreadsheetTitle.name: spreadsheetTitle,
-        googleSheet.SheetName.worksheetTitle.name: worksheetTitle,
+        googleSheet.SheetName.googleCredential.value:  authorize(credentials),
+        googleSheet.SheetName.spreadsheetTitle.name: googleSheet.SheetName.spreadsheetTitle.value,
+        googleSheet.SheetName.worksheetTitle.name: googleSheet.SheetName.worksheetTitle.value,
     }
