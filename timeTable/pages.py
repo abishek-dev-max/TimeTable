@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from timeTable.form import searchData
-from timeTable.fileQuery import (
+from timeTable.database.fileQuery import (
     getStaffNameByDepartment,
     getDepartments,
     getClassNameByDepartment,
@@ -16,10 +16,6 @@ def home():
 
 @bluePrintOfPages.route("/form", methods=["GET", "POST"])
 def searchForm():
-    staffAndDepartmentMapper = getStaffNameByDepartment()
-    classNameAndDepartmentMapper = getClassNameByDepartment()
-    departments = getDepartments()
-
     if request.method == "POST":
         result = searchData()
         session["searchResult"] = result
@@ -30,7 +26,7 @@ def searchForm():
     return render_template(
         "pages/searchForm.html",
         result=result,
-        departments=departments,
-        departmentToStaff=staffAndDepartmentMapper,
-        departmentToClassName=classNameAndDepartmentMapper,
+        departments=getDepartments(),
+        departmentToStaff=getStaffNameByDepartment(),
+        departmentToClassName=getClassNameByDepartment(),
     )

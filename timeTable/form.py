@@ -1,6 +1,6 @@
 from flask import request
 from timeTable.enums import timeTable
-from timeTable.fileQuery import query
+from timeTable.database.fileQuery import query
 
 def searchData():
     staffName = request.form.get(timeTable.TimeTable.StaffName.value)

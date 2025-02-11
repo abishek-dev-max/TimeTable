@@ -1,4 +1,4 @@
-from timeTable.prepareFileForQuery import readSheetFromGoogle, convertDatatypes,convertSheetDataIntoDataframe
+from timeTable.database.prepareFileForQuery import readSheetFromGoogle, convertDatatypes,convertSheetDataIntoDataframe
 
 timeTableSheet = readSheetFromGoogle()
 timeTable = convertSheetDataIntoDataframe(timeTableSheet)
@@ -55,7 +55,7 @@ def getClassNameByDepartment():
 
 
 def getDepartments():
-    departments = list(set(entry["Department"] for entry in timeTableSheet))
+    departments = sorted(set(entry["Department"] for entry in timeTableSheet))
     return departments
 
 

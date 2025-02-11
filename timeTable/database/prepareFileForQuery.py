@@ -1,14 +1,12 @@
 import pandas as pd
-from timeTable.sheets import openSheet
+from timeTable.database.sheets import openSheet
 
 def readSheetFromGoogle():
-    worksheet = openSheet()
-    sheetValues = worksheet.get_all_records()
-    return sheetValues
+    return openSheet().get_all_records()
+    
 
 def convertSheetDataIntoDataframe(sheetValues):
-    df = pd.DataFrame(sheetValues[1:], columns=sheetValues[0])
-    return df
+    return pd.DataFrame(sheetValues[1:], columns=sheetValues[0])
 
 
 def convertDatatypes(csvFile):
