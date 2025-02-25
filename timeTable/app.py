@@ -1,5 +1,5 @@
 from flask import Flask
-from timeTable.pages import bluePrintOfPages
+from timeTable.controller.pages import bluePrintOfPages
 from timeTable.config import Config
 
 app = Flask(__name__)

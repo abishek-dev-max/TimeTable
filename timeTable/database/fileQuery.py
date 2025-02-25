@@ -1,72 +1,82 @@
-from timeTable.database.prepareFileForQuery import readSheetFromGoogle, convertDatatypes,convertSheetDataIntoDataframe
+from timeTable.database.prepareFileForQuery import (
+    readSheetFromGoogle,
+    convertSheetDataIntoDataframe,
+)
 
-timeTableSheet = readSheetFromGoogle()
-timeTable = convertSheetDataIntoDataframe(timeTableSheet)
-convertDatatypes(timeTable)
+
+def initializeTimeTable():
+    """Loads and preprocesses the timetable data."""
+    sheet_data = readSheetFromGoogle()
+    df = convertSheetDataIntoDataframe(sheet_data)
+    return df, sheet_data
+
+
+timeTable, timeTableSheet = initializeTimeTable()
+
 
 def query(
-    day,
-    period,
-    staffName=None,
-    roomNo=None,
-    className=None,
-):
-    querySubject = timeTable.query("Day == @day and Period == @period")
+    day_order: str,
+    period: str,
+    staff_name: str = None,
+    class_room: str = None,
+    class_name: str = None,
+) -> dict:
+    # Ensure day_order and period match correctly
+    querySubject = timeTable.query("`Day Order` == @day_order and Period == @period")
 
-    if staffName is not None and staffName != "":
+    if staff_name:
+        # Strip whitespace and perform a case-insensitive match
         querySubject = querySubject[
-            querySubject["Staff Name"].str.contains(staffName, case=False, na=False)
+            querySubject["Staff Name"]
+            .str.contains(staff_name, case=False, na=False)
         ]
-    if roomNo:
-        querySubject = querySubject[querySubject["Room No"] == roomNo]
-    if className:
-        querySubject = querySubject[querySubject["Class"] == className]
+
+    if class_room:
+        querySubject = querySubject[
+            querySubject["Class Room"].str.strip() == class_room.strip()
+        ]
+
+    if class_name:
+        querySubject = querySubject[
+            querySubject["Class"].str.strip() == class_name.strip()
+        ]
 
     if not querySubject.empty:
-        result = (
-            querySubject[
-                [
-                    "Staff ID",
-                    "Staff Name",
-                    "Department",
-                    "Subject",
-                    "Room No",
-                    "Class",
-                    "Day",
-                    "Period",
-                ]
+        return querySubject.iloc[0][
+            [
+                "Staff ID",
+                "Staff Name",
+                "Department",
+                "Subject",
+                "Class Room",
+                "Class",
+                "Day Order",
+                "Period",
             ]
-            .iloc[0]
-            .to_dict()
-        )
-    else:
-        result = {"error": "Free Period"}
-    return result
+        ].to_dict()
+
+    return {"error": "Free Period"}
 
 
-def getStaffNameByDepartment():
-    departmentToStaff = getRelationalItem("Department", "Staff Name", timeTableSheet)
-    return departmentToStaff
-
-
-def getClassNameByDepartment():
-    departmentToClassName = getRelationalItem("Department", "Class", timeTableSheet)
-    return departmentToClassName
-
-
-def getDepartments():
-    departments = sorted(set(entry["Department"] for entry in timeTableSheet))
-    return departments
-
-
-def getRelationalItem(fieldOne, fieldTwo, records):
-    fieldOneToFieldtwoMapping = {}
+def getRelationalMapping(field_one: str, field_two: str, records: list) -> dict:
+    mapping = {}
     for record in records:
-        fieldOneValue = record[fieldOne]
-        fieldTwoValue = record[fieldTwo]
-        if fieldOneValue in fieldOneToFieldtwoMapping:
-            if fieldTwoValue not in fieldOneToFieldtwoMapping[fieldOneValue]:
-                fieldOneToFieldtwoMapping[fieldOneValue].append(fieldTwoValue)
-        else:
-            fieldOneToFieldtwoMapping[fieldOneValue] = [fieldTwoValue]
-    return fieldOneToFieldtwoMapping
+        key, value = record[field_one], record[field_two]
+        (
+            mapping.setdefault(key, []).append(value)
+            if value not in mapping.get(key, [])
+            else None
+        )
+    return mapping
+
+
+def getStaffByDepartment() -> dict:
+    return getRelationalMapping("Department", "Staff Name", timeTableSheet)
+
+
+def getClassesByDepartment() -> dict:
+    return getRelationalMapping("Department", "Class", timeTableSheet)
+
+
+def getDepartments() -> list:
+    return sorted({entry["Department"] for entry in timeTableSheet})

@@ -3,21 +3,7 @@ from timeTable.database.sheets import openSheet
 
 def readSheetFromGoogle():
     return openSheet().get_all_records()
-    
+
 
 def convertSheetDataIntoDataframe(sheetValues):
     return pd.DataFrame(sheetValues[1:], columns=sheetValues[0])
-
-
-def convertDatatypes(csvFile):
-    numeric_columns = ["Day", "Period"] 
-    csvFile[numeric_columns] = csvFile[numeric_columns].apply(
-        pd.to_numeric, errors="coerce"
-    )
-
-    csvFile["Room No"] = pd.to_numeric(csvFile["Room No"], errors="coerce").astype(
-        "Int64"
-    )
-
-    string_columns = csvFile.columns.difference(numeric_columns + ["Room No"])
-    csvFile[string_columns] = csvFile[string_columns].astype(str)

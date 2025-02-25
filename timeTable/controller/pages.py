@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
-from timeTable.form import searchData
+from timeTable.service.form import searchData
 from timeTable.database.fileQuery import (
-    getStaffNameByDepartment,
+    getStaffByDepartment,
     getDepartments,
-    getClassNameByDepartment,
+    getClassesByDepartment,
 )
 
 bluePrintOfPages = Blueprint("pages", __name__)
@@ -27,6 +27,6 @@ def searchForm():
         "pages/searchForm.html",
         result=result,
         departments=getDepartments(),
-        departmentToStaff=getStaffNameByDepartment(),
-        departmentToClassName=getClassNameByDepartment(),
+        departmentToStaff=getStaffByDepartment(),
+        departmentToClassName=getClassesByDepartment(),
     )
