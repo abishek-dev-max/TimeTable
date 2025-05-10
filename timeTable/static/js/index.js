@@ -1,108 +1,97 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  // Get references to DOM elements once, to avoid repeated lookups
   const form = document.getElementById("form");
   const submitBtn = document.getElementById("submitBtn");
   const clearBtn = document.getElementById("clearBtn");
   const departmentDropdown = document.getElementById("department");
   const staffNameDropdown = document.getElementById("staffName");
-  const classNameDropdowm = document.getElementById("class");
+  const classNameDropdown = document.getElementById("class");
+  const labelHeaders = document.querySelectorAll(".formbold-form-label h3");
 
-  function updateDropdownOptions(
+  // Utility function to create <option> elements with optional attributes
+  const createOption = (
+    value,
+    text,
+    { selected = false, disabled = false } = {}
+  ) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.text = text;
+    if (selected) option.selected = true;
+    if (disabled) option.disabled = true;
+    return option;
+  };
+
+  // Function to update dropdown options based on source dropdown selection and mapping data
+  const updateDropdownOptions = (
     sourceDropdown,
     targetDropdown,
-    dataMapping,
-    placeholderFunction,
-    addSelectForAll = false
-  ) {
-    targetDropdown.innerHTML = "";
+    dataMapping
+  ) => {
+    const options = [];
 
-    if (addSelectForAll && targetDropdown.id === "class") {
-      var selectOption = document.createElement("option");
-      selectOption.value = "";
-      selectOption.text = "Select";
-      selectOption.selected = false;
-      targetDropdown.add(selectOption);
+    // Add default "Select" option for specific dropdowns
+    if (["class", "staffName"].includes(targetDropdown.id)) {
+      options.push(createOption("", "Select"));
     }
 
-    if (sourceDropdown.value in dataMapping) {
-      var sortedOptions = Array.from(dataMapping[sourceDropdown.value]).sort();
-
-      if (sortedOptions.length === 0) {
-        placeholderFunction(targetDropdown);
-      }
-
-      sortedOptions.forEach((optionValue) => {
-        var option = document.createElement("option");
-        option.value = optionValue;
-        option.text = optionValue;
-        targetDropdown.add(option);
-      });
+    // Fetch mapped values from the selected source and sort them
+    const values = dataMapping[sourceDropdown.value] || [];
+    if (values.length) {
+      values
+        .sort()
+        .forEach((value) => options.push(createOption(value, value)));
     } else {
-      placeholderFunction(targetDropdown);
+      // Add placeholder if no valid values exist
+      options.push(
+        createOption("none", "Select", { selected: true, disabled: true })
+      );
     }
-  }
 
-  function checkRequiredFields() {
-    const requiredFields = form.querySelectorAll("[required]");
-    const allFilled = [...requiredFields].every(
+    // Replace all children at once to minimize reflow and improve performance
+    targetDropdown.replaceChildren(...options);
+  };
+
+  // Function to validate that all required fields in the form are filled
+  const checkRequiredFields = () => {
+    const allFilled = Array.from(form.querySelectorAll("[required]")).every(
       (field) => field.value.trim() !== ""
     );
-
     submitBtn.disabled = !allFilled;
-  }
+  };
 
-  function updateStaffNames() {
+  // Convenience function to update both dependent dropdowns based on the selected department
+  const updateFormDropdowns = () => {
     updateDropdownOptions(
       departmentDropdown,
       staffNameDropdown,
-      departmentToStaff,
-      addPlaceholderOption
+      departmentToStaff
     );
-  }
-
-  function updateClassNames() {
     updateDropdownOptions(
       departmentDropdown,
-      classNameDropdowm,
-      departmentToClassName,
-      addPlaceholderOption,
-      true
+      classNameDropdown,
+      departmentToClassName
     );
-  }
+  };
 
-  function addPlaceholderOption(dropdown) {
-    var placeholderOption = document.createElement("option");
-    placeholderOption.value = "none";
-    placeholderOption.text = "Select";
-    placeholderOption.selected = true;
-    placeholderOption.disabled = true;
-    dropdown.add(placeholderOption);
-  }
+  // Add event listener for form inputs to validate required fields dynamically
+  form.addEventListener("input", checkRequiredFields);
 
-  form.addEventListener("input", function () {
+  // Update dependent dropdowns and check field validity when department changes
+  departmentDropdown.addEventListener("change", () => {
+    updateFormDropdowns();
     checkRequiredFields();
   });
 
-  departmentDropdown.addEventListener("change", function () {
-    updateStaffNames();
-    updateClassNames();
-    checkRequiredFields();
-  });
-
-  clearBtn.addEventListener("click", function () {
+  // Reset form, labels, and dropdowns when clear button is clicked
+  clearBtn.addEventListener("click", () => {
     form.reset();
-
-    document
-      .querySelectorAll(".formbold-form-label h3")
-      .forEach(function (item) {
-        item.innerHTML = "";
-      });
-
-    updateStaffNames();
-    updateClassNames();
+    labelHeaders.forEach((header) => (header.innerHTML = ""));
+    updateFormDropdowns();
     checkRequiredFields();
   });
 
-  updateStaffNames();
-  updateClassNames();
+  // Initial setup: populate dropdowns and validate required fields
+  updateFormDropdowns();
   checkRequiredFields();
 });

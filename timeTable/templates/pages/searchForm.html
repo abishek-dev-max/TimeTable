@@ -39,60 +39,7 @@
           method="post"
         >
           <div class="formbold-input-flex">
-            <div>
-              <label for="department" class="formbold-form-label">
-                <b>Department*</b>
-              </label>
-              <select
-                id="department"
-                name="department"
-                class="formbold-form-input"
-                required
-              >
-                <option value="" selected>Select</option>
-                {% for department in departments %}
-                <option value="{{ department }}">{{ department }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div>
-              <label for="staffName" class="formbold-form-label">
-                <b>Staff Name</b>
-              </label>
-              <select
-                id="staffName"
-                name="staffName"
-                class="formbold-form-input"
-              >
-              </select>
-            </div>
              <div>
-              <label for="class" class="formbold-form-label">
-                <b>Class</b>
-              </label>
-              <select
-                id="class"
-                name="class"
-                class="formbold-form-input"
-              >
-              </select>
-            </div>
-          </div>
-
-          <div class="formbold-input-flex">
-            <div>
-              <label for="roomNo" class="formbold-form-label"
-                ><b>Room No</b></label
-              >
-              <input
-                type="text"
-                name="roomNo"
-                id="roomNo"
-                placeholder="403"
-                class="formbold-form-input"
-              />
-            </div>
-            <div>
               <label for="day" class="formbold-form-label"><b>Day*</b></label>
               <select name="day" id="day" class="formbold-form-input" required>
                 <option value="" disabled selected>Select</option>
@@ -114,13 +61,69 @@
                 required
               >
                 <option value="" disabled selected>Select</option>
-                <option value="I">1(8.15-9.25)</option>
-                <option value="II">2(9.25-10.35)</option>
-                <option value="III">3(11.00-12.10)</option>
-                <option value="IV">4(12.10-1.20)</option>
-                <option value="V">5(1.45-2.55)</option>
-                <option value="VI">6(2.55-4.05)</option>
-                <option value="VII">7(4.05-5.15)</option>
+                <option value="I">1(8.15-9.05)</option>
+                <option value="II">2(9.05-9.55)</option>
+                <option value="III">3(9.55-10.45)</option>
+                <option value="IV">4(11.00-11.45)</option>
+                <option value="V">5(11.45-12.30)</option>
+                <option value="VI">6(12.35-1.25)</option>
+                <option value="VII">7(1.25-2.15)</option>
+                <option value="VIII">8(2.15-3.05)</option>
+                <option value="IX">9(3.20-4.05)</option>
+                <option value="X">10(4.05-4.50)</option>
+              </select>
+            </div>
+            <div>
+              <label for="department" class="formbold-form-label">
+                <b>Department*</b>
+              </label>
+              <select
+                id="department"
+                name="department"
+                class="formbold-form-input"
+                required
+              >
+                <option value="" selected>Select</option>
+                {% for department in departments %}
+                <option value="{{ department }}">{{ department }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+
+          <div class="formbold-input-flex">
+                <div>
+              <label for="class" class="formbold-form-label">
+                <b>Class</b>
+              </label>
+              <select
+                id="class"
+                name="class"
+                class="formbold-form-input"
+              >
+              </select>
+            </div>
+              <div>
+              <label for="roomNo" class="formbold-form-label"
+                ><b>Room No</b></label
+              >
+              <input
+                type="text"
+                name="roomNo"
+                id="roomNo"
+                placeholder="403"
+                class="formbold-form-input"
+              />
+            </div>
+                <div>
+              <label for="staffName" class="formbold-form-label">
+                <b>Staff Name</b>
+              </label>
+              <select
+                id="staffName"
+                name="staffName"
+                class="formbold-form-input"
+              >
               </select>
             </div>
           </div>
