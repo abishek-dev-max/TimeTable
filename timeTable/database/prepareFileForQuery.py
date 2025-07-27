@@ -6,4 +6,5 @@ def readSheetFromGoogle():
 
 
 def convertSheetDataIntoDataframe(sheetValues):
-    return pd.DataFrame(sheetValues[1:], columns=sheetValues[0])
+    df = pd.DataFrame(sheetValues)
+    return df

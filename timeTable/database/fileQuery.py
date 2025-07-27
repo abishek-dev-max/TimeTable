@@ -21,8 +21,10 @@ def query(
     class_room: str = None,
     class_name: str = None,
 ) -> dict:
-    # Ensure day_order and period match correctly
-    querySubject = timeTable.query("`Day Order` == @day_order and Period == @period")
+    querySubject = timeTable.loc[
+        (timeTable["Day Order"] == int(day_order))
+        & (timeTable["Period"] == str(period).strip())
+    ]
 
     if staff_name:
         # Strip whitespace and perform a case-insensitive match
@@ -40,7 +42,7 @@ def query(
         querySubject = querySubject[
             querySubject["Class"].str.strip() == class_name.strip()
         ]
-
+    # If no results, return an error message
     if not querySubject.empty:
         return querySubject.iloc[0][
             [
