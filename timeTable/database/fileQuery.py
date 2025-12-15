@@ -63,7 +63,7 @@ def query(
 def getRelationalMapping(field_one: str, field_two: str, records: list) -> dict:
     mapping = {}
     for record in records:
-        key, value = record[field_one], record[field_two]
+        key, value = record[field_one].strip(), record[field_two].strip()
         (
             mapping.setdefault(key, []).append(value)
             if value not in mapping.get(key, [])
@@ -81,4 +81,4 @@ def getClassesByDepartment() -> dict:
 
 
 def getDepartments() -> list:
-    return sorted({entry["Department"] for entry in timeTableSheet})
+    return sorted({entry["Department"].strip() for entry in timeTableSheet})
