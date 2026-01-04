@@ -21,9 +21,10 @@ def query(
     class_room: str = None,
     class_name: str = None,
 ) -> dict:
+    timeTable["Period"] = timeTable["Period"].astype(str)
     querySubject = timeTable.loc[
         (timeTable["Day Order"] == str(day_order).strip())
-        & (timeTable["Period"] == str(period).strip())
+        & (timeTable["Period"] == period.strip())
     ]
     if staff_name:
         # Strip whitespace and perform a case-insensitive match
